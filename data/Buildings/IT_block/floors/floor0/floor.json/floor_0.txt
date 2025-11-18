@@ -1,0 +1,87 @@
+{
+  "building": "IT Block",
+  "floor_number": 0,
+  "entrance": {
+    "name": "Entrance / Stairs",
+    "image": "stairs.jpeg",
+    "position": 0
+  },
+  "corridor_photos": [
+    "corridor1.jpeg",
+    "corridor2.jpeg",
+    "corridor3.jpeg",
+    "corridor4.jpeg"
+  ],
+  "rooms": [
+    {
+      "id": "lab1",
+      "name": "Lab 1",
+      "type": "Lab",
+      "image": "lab1.jpeg",
+      "position": 10
+    },
+    {
+      "id": "washroom",
+      "name": "Washrooms",
+      "type": "Washroom",
+      "image": "washroom.jpeg",
+      "position": 20
+    },
+    {
+      "id": "room101",
+      "name": "Room 101",
+      "type": "Classroom",
+      "image": "room101.jpeg",
+      "position": 30
+    },
+    {
+      "id": "lab2",
+      "name": "Lab 2",
+      "type": "Lab",
+      "image": "lab2.jpeg",
+      "position": 40
+    },
+    {
+      "id": "staffrooms",
+      "name": "Staff Rooms",
+      "type": "Staff",
+      "image": "staffroom.jpeg",
+      "position": 50
+    },
+    {
+      "id": "hod",
+      "name": "HOD Department",
+      "type": "Office",
+      "image": "staffroom.jpeg",
+      "position": 60
+    },
+    {
+      "id": "room102",
+      "name": "Room 102",
+      "type": "Classroom",
+      "image": "room102.jpeg",
+      "position": 70
+    },
+    {
+      "id": "lab3",
+      "name": "Lab 3",
+      "type": "Lab",
+      "image": "lab3.jpeg",
+      "position": 80
+    },
+    {
+      "id": "room103",
+      "name": "Room 103",
+      "type": "Classroom",
+      "image": "room103.jpeg",
+      "position": 90
+    },
+    {
+      "id": "creative",
+      "name": "Creative Room",
+      "type": "Creative",
+      "image": "creative.jpeg",
+      "position": 100
+    }
+  ]
+}
