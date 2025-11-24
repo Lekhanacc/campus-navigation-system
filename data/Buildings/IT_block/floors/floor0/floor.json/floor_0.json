@@ -1,87 +1,137 @@
 {
   "building": "IT Block",
   "floor_number": 0,
+  "floor_name": "Ground Floor",
   "entrance": {
-    "name": "Entrance / Stairs",
-    "image": "stairs.jpeg",
-    "position": 0
+    "name": "Main Entrance",
+    "position": "bottom-left-corner",
+    "connected_to": "Corridor"
   },
-  "corridor_photos": [
-    "corridor1.jpeg",
-    "corridor2.jpeg",
-    "corridor3.jpeg",
-    "corridor4.jpeg"
-  ],
-  "rooms": [
+
+  "nodes": [
     {
-      "id": "lab1",
-      "name": "Lab 1",
-      "type": "Lab",
-      "image": "lab1.jpeg",
-      "position": 10
+      "id": "corridor-main",
+      "type": "corridor",
+      "shape": "rectangle",
+      "description": "Main corridor running around the central open area"
+    },
+
+    {
+      "id": "stairs-upper",
+      "type": "stairs",
+      "location": "center-left",
+      "description": "Main stairs leading to upper floor"
     },
     {
-      "id": "washroom",
-      "name": "Washrooms",
-      "type": "Washroom",
-      "image": "washroom.jpeg",
-      "position": 20
+      "id": "stairs-secondary",
+      "type": "stairs",
+      "location": "top-right",
+      "description": "Small stair area near lift"
     },
     {
-      "id": "room101",
+      "id": "lift",
+      "type": "lift",
+      "location": "top-right"
+    },
+
+    {
+      "id": "it-lab-1",
+      "type": "lab",
+      "name": "IT Lab 1",
+      "location": "left"
+    },
+    {
+      "id": "boys-washroom",
+      "type": "washroom",
+      "gender": "boys",
+      "location": "top-left"
+    },
+    {
+      "id": "girls-washroom",
+      "type": "washroom",
+      "gender": "girls",
+      "location": "top-left"
+    },
+    {
+      "id": "room-101",
+      "type": "classroom",
       "name": "Room 101",
-      "type": "Classroom",
-      "image": "room101.jpeg",
-      "position": 30
+      "location": "top-center-left"
     },
     {
-      "id": "lab2",
-      "name": "Lab 2",
-      "type": "Lab",
-      "image": "lab2.jpeg",
-      "position": 40
+      "id": "it-lab-2",
+      "type": "lab",
+      "name": "IT Lab 2",
+      "location": "top-center"
     },
     {
-      "id": "staffrooms",
-      "name": "Staff Rooms",
-      "type": "Staff",
-      "image": "staffroom.jpeg",
-      "position": 50
+      "id": "staff-room-2",
+      "type": "staff-room",
+      "name": "Staff Room 2",
+      "location": "top-center-right"
     },
     {
-      "id": "hod",
-      "name": "HOD Department",
-      "type": "Office",
-      "image": "staffroom.jpeg",
-      "position": 60
+      "id": "aiml-hod",
+      "type": "office",
+      "name": "AIML HOD Room",
+      "location": "top-right"
     },
     {
-      "id": "room102",
+      "id": "staff-room-1",
+      "type": "staff-room",
+      "name": "Staff Room 1",
+      "location": "right"
+    },
+    {
+      "id": "ups-room",
+      "type": "utility",
+      "name": "UPS Room",
+      "location": "right"
+    },
+    {
+      "id": "room-102",
+      "type": "classroom",
       "name": "Room 102",
-      "type": "Classroom",
-      "image": "room102.jpeg",
-      "position": 70
+      "location": "right-lower"
     },
     {
-      "id": "lab3",
-      "name": "Lab 3",
-      "type": "Lab",
-      "image": "lab3.jpeg",
-      "position": 80
-    },
-    {
-      "id": "room103",
+      "id": "room-103",
+      "type": "classroom",
       "name": "Room 103",
-      "type": "Classroom",
-      "image": "room103.jpeg",
-      "position": 90
+      "location": "bottom-center"
     },
     {
-      "id": "creative",
+      "id": "creative-room",
+      "type": "misc",
       "name": "Creative Room",
-      "type": "Creative",
-      "image": "creative.jpeg",
-      "position": 100
+      "location": "bottom-left"
+    },
+    {
+      "id": "it-lab-3",
+      "type": "lab",
+      "name": "IT Lab 3",
+      "location": "bottom-right"
     }
+  ],
+
+  "paths": [
+    { "from": "entrance", "to": "corridor-main" },
+    { "from": "corridor-main", "to": "stairs-upper" },
+    { "from": "corridor-main", "to": "stairs-secondary" },
+    { "from": "corridor-main", "to": "lift" },
+
+    { "from": "corridor-main", "to": "it-lab-1" },
+    { "from": "corridor-main", "to": "boys-washroom" },
+    { "from": "corridor-main", "to": "girls-washroom" },
+    { "from": "corridor-main", "to": "room-101" },
+    { "from": "corridor-main", "to": "it-lab-2" },
+    { "from": "corridor-main", "to": "staff-room-2" },
+    { "from": "corridor-main", "to": "aiml-hod" },
+    { "from": "corridor-main", "to": "staff-room-1" },
+    { "from": "corridor-main", "to": "ups-room" },
+    { "from": "corridor-main", "to": "room-102" },
+    { "from": "corridor-main", "to": "creative-room" },
+    { "from": "corridor-main", "to": "room-103" },
+    { "from": "corridor-main", "to": "it-lab-3" }
   ]
 }
