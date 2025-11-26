@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>IT Block Navigation (A*)</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    label { margin-right: 8px; }
+    select { margin-right: 16px; }
+    button { padding: 4px 10px; }
+    #output { margin-top: 20px; white-space: pre-wrap; font-family: monospace; }
+  </style>
+</head>
+<body>
+  <h2>IT Block Navigation – A* Path Finder</h2>
+
+  <div>
+    <label for="startNode">Start:</label>
+    <select id="startNode"></select>
+
+    <label for="goalNode">Destination:</label>
+    <select id="goalNode"></select>
+
+    <button id="findPathBtn">Find Path</button>
+  </div>
+
+  <div id="output"></div>
+
+  <script>
+    // ----------------- Graph Data -----------------
+    const graphData = {
+      "nodes": [
+        { "id": "C_ENTRANCE",    "name": "Corridor Entrance",        "type": "corridor" },
+        { "id": "C_BOTTOM_MID",  "name": "Bottom Corridor Middle",   "type": "corridor" },
+        { "id": "C_BOTTOM_RIGHT","name": "Bottom Corridor Right",    "type": "corridor" },
+        { "id": "C_RIGHT_MID",   "name": "Right Corridor Middle",    "type": "corridor" },
+        { "id": "C_RIGHT_TOP",   "name": "Right Corridor Top",       "type": "corridor" },
+        { "id": "C_TOP_MID",     "name": "Top Corridor Middle",      "type": "corridor" },
+        { "id": "C_TOP_LEFT",    "name": "Top Corridor Left",        "type": "corridor" },
+
+        { "id": "ENTRANCE",      "name": "Entrance",                 "type": "entrance" },
+        { "id": "ITLAB_01",      "name": "IT Lab 01",                "type": "lab" },
+        { "id": "ITLAB_02",      "name": "IT Lab 02",                "type": "lab" },
+        { "id": "ITLAB_03",      "name": "IT Lab 03",                "type": "lab" },
+        { "id": "ROOM_101",      "name": "Room 101",                 "type": "classroom" },
+        { "id": "ROOM_102",      "name": "Room 102",                 "type": "classroom" },
+        { "id": "ROOM_103",      "name": "Room 103",                 "type": "classroom" },
+        { "id": "CREATIVE_ROOM", "name": "Creative Room",            "type": "room" },
+        { "id": "STAFF_ROOM_01", "name": "Staff Room 01",            "type": "staff" },
+        { "id": "STAFF_ROOM_02", "name": "Staff Room 02",            "type": "staff" },
+        { "id": "AIML_HOD",      "name": "AIML HoD Room",            "type": "office" },
+        { "id": "UPS_ROOM",      "name": "UPS Room",                 "type": "utility" },
+        { "id": "LIFT",          "name": "Lift",                     "type": "lift" },
+        { "id": "STAIRS",        "name": "Staircase",                "type": "stairs" },
+        { "id": "BOYS_WASHROOM", "name": "Boys Washroom",            "type": "washroom" },
+        { "id": "GIRLS_WASHROOM","name": "Girls Washroom",           "type": "washroom" }
+      ],
+
+      "edges": [
+        { "from": "C_ENTRANCE",    "to": "C_BOTTOM_MID",   "cost": 1 },
+        { "from": "C_BOTTOM_MID",  "to": "C_BOTTOM_RIGHT", "cost": 1 },
+        { "from": "C_BOTTOM_RIGHT","to": "C_RIGHT_MID",    "cost": 1 },
+        { "from": "C_RIGHT_MID",   "to": "C_RIGHT_TOP",    "cost": 1 },
+        { "from": "C_RIGHT_TOP",   "to": "C_TOP_MID",      "cost": 1 },
+        { "from": "C_TOP_MID",     "to": "C_TOP_LEFT",     "cost": 1 },
+
+        { "from": "ENTRANCE",      "to": "C_ENTRANCE",     "cost": 1 },
+        { "from": "ITLAB_01",      "to": "C_ENTRANCE",     "cost": 1 },
+        { "from": "CREATIVE_ROOM", "to": "C_BOTTOM_MID",   "cost": 1 },
+        { "from": "ROOM_103",      "to": "C_BOTTOM_MID",   "cost": 1 },
+        { "from": "ITLAB_03",      "to": "C_BOTTOM_RIGHT", "cost": 1 },
+
+        { "from": "ROOM_102",      "to": "C_RIGHT_MID",    "cost": 1 },
+        { "from": "UPS_ROOM",      "to": "C_RIGHT_MID",    "cost": 1 },
+        { "from": "STAFF_ROOM_01", "to": "C_RIGHT_TOP",    "cost": 1 },
+        { "from": "LIFT",          "to": "C_RIGHT_TOP",    "cost": 0.5 },
+        { "from": "STAIRS",        "to": "C_RIGHT_TOP",    "cost": 0.5 },
+
+        { "from": "ITLAB_02",      "to": "C_TOP_MID",      "cost": 1 },
+        { "from": "STAFF_ROOM_02", "to": "C_TOP_MID",      "cost": 1 },
+        { "from": "AIML_HOD",      "to": "C_TOP_MID",      "cost": 1 },
+        { "from": "ROOM_101",      "to": "C_TOP_LEFT",     "cost": 1 },
+        { "from": "BOYS_WASHROOM", "to": "C_TOP_LEFT",     "cost": 0.5 },
+        { "from": "GIRLS_WASHROOM","to": "C_TOP_LEFT",     "cost": 0.5 }
+      ]
+    };
+
+    // ----------------- Build adjacency list -----------------
+    function buildGraph(data) {
+      const adj = {};
+      data.nodes.forEach(n => adj[n.id] = []);
+      data.edges.forEach(e => {
+        adj[e.from].push({ to: e.to, cost: e.cost });
+        adj[e.to].push({ to: e.from, cost: e.cost }); // undirected
+      });
+      return adj;
+    }
+
+    const graph = buildGraph(graphData);
+
+    // ----------------- A* Algorithm -----------------
+    function aStar(graph, start, goal) {
+      // heuristic is 0 (no coordinates yet)
+      const h = () => 0;
+
+      const openSet = new Set([start]);
+      const cameFrom = {};
+
+      const gScore = {};
+      const fScore = {};
+      Object.keys(graph).forEach(n => {
+        gScore[n] = Infinity;
+        fScore[n] = Infinity;
+      });
+      gScore[start] = 0;
+      fScore[start] = h(start);
+
+      while (openSet.size > 0) {
+        // node in openSet with lowest fScore
+        let current = null;
+        let lowestF = Infinity;
+        for (const n of openSet) {
+          if (fScore[n] < lowestF) {
+            lowestF = fScore[n];
+            current = n;
+          }
+        }
+
+        if (current === goal) {
+          const path = reconstructPath(cameFrom, current);
+          return { path, totalCost: gScore[current] };
+        }
+
+        openSet.delete(current);
+
+        for (const neighbor of graph[current]) {
+          const tentativeG = gScore[current] + neighbor.cost;
+
+          if (tentativeG < gScore[neighbor.to]) {
+            cameFrom[neighbor.to] = current;
+            gScore[neighbor.to] = tentativeG;
+            fScore[neighbor.to] = tentativeG + h(neighbor.to);
+
+            if (!openSet.has(neighbor.to)) {
+              openSet.add(neighbor.to);
+            }
+          }
+        }
+      }
+
+      return { path: null, totalCost: Infinity };
+    }
+
+    function reconstructPath(cameFrom, current) {
+      const totalPath = [current];
+      while (current in cameFrom) {
+        current = cameFrom[current];
+        totalPath.unshift(current);
+      }
+      return totalPath;
+    }
+
+    // ----------------- UI Wiring -----------------
+    const startSel = document.getElementById('startNode');
+    const goalSel  = document.getElementById('goalNode');
+    const output   = document.getElementById('output');
+
+    // fill dropdowns with node IDs (only meaningful places, not internal corridor names if you like)
+    function populateSelects() {
+      graphData.nodes.forEach(node => {
+        const opt1 = document.createElement('option');
+        opt1.value = node.id;
+        opt1.textContent = node.name + " (" + node.id + ")";
+        startSel.appendChild(opt1);
+
+        const opt2 = document.createElement('option');
+        opt2.value = node.id;
+        opt2.textContent = node.name + " (" + node.id + ")";
+        goalSel.appendChild(opt2);
+      });
+
+      // default: Entrance -> IT Lab 01
+      startSel.value = "ENTRANCE";
+      goalSel.value  = "ITLAB_01";
+    }
+
+    document.getElementById('findPathBtn').addEventListener('click', () => {
+      const start = startSel.value;
+      const goal  = goalSel.value;
+
+      const result = aStar(graph, start, goal);
+
+      if (!result.path) {
+        output.textContent = "No path found.";
+        return;
+      }
+
+      const jsonResult = {
+        start: start,
+        goal: goal,
+        path: result.path,
+        totalCost: result.totalCost
+      };
+
+      output.textContent = JSON.stringify(jsonResult, null, 2);
+    });
+
+    populateSelects();
+  </script>
+</body>
+</html>
