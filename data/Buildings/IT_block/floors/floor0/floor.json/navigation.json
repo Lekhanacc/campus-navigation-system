@@ -1,42 +1,263 @@
 {
+  "building": "IT Block",
   "floor": 0,
+  "generated_by": "ChatGPT",
+  "notes": "Coordinates are in arbitrary units relative to the provided floor map image. Distances are relative weights (not meters).",
   "nodes": [
-    { "id": "n0", "name": "Entrance", "x": 10, "y": 5 },
-    { "id": "n1", "name": "Corridor Start", "x": 20, "y": 25 },
-    { "id": "n2", "name": "Creative Room", "x": 25, "y": 10 },
-    { "id": "n3", "name": "Room 103", "x": 45, "y": 10 },
-    { "id": "n4", "name": "IT Lab 3", "x": 75, "y": 10 },
-    { "id": "n5", "name": "Corridor Mid", "x": 50, "y": 80 },
-    { "id": "n6", "name": "Lift", "x": 80, "y": 75 },
-    { "id": "n7", "name": "UPS Room", "x": 90, "y": 70 },
-    { "id": "n8", "name": "Room 102", "x": 90, "y": 55 },
-    { "id": "n9", "name": "Staff Room 1", "x": 90, "y": 65 },
-    { "id": "n10", "name": "AIML / HOD", "x": 90, "y": 85 },
-    { "id": "n11", "name": "Staff Room 02", "x": 70, "y": 95 },
-    { "id": "n12", "name": "IT Lab 2", "x": 50, "y": 95 },
-    { "id": "n13", "name": "Room 101", "x": 25, "y": 95 },
-    { "id": "n14", "name": "Girls Washroom", "x": 15, "y": 90 },
-    { "id": "n15", "name": "Boys Washroom", "x": 15, "y": 80 },
-    { "id": "n16", "name": "IT Lab 01", "x": 10, "y": 55 }
+    {
+      "id": "N1",
+      "name": "Entrance",
+      "type": "entrance",
+      "x": 80,
+      "y": 950,
+      "image": "entrance.jpg",
+      "description": "Main entrance"
+    },
+    {
+      "id": "N2",
+      "name": "Corridor_4_Start",
+      "type": "corridor",
+      "x": 300,
+      "y": 920,
+      "image": "Corridor_4_0.jpeg"
+    },
+    {
+      "id": "N3",
+      "name": "Creative_Room",
+      "type": "room",
+      "x": 420,
+      "y": 940,
+      "image": "creative_area_0.jpeg",
+      "description": "Creative Room (near Entrance)"
+    },
+    {
+      "id": "N4",
+      "name": "Room_103",
+      "type": "room",
+      "x": 560,
+      "y": 940,
+      "image": "room_103_0.jpeg"
+    },
+    {
+      "id": "N5",
+      "name": "IT_Lab_3",
+      "type": "lab",
+      "x": 730,
+      "y": 940,
+      "image": "lab_3_0.jpeg"
+    },
+    {
+      "id": "N6",
+      "name": "Corridor_1_South",
+      "type": "corridor",
+      "x": 120,
+      "y": 700,
+      "image": "Corridor_1_0.jpeg"
+    },
+    {
+      "id": "N7",
+      "name": "Stairs",
+      "type": "stairs",
+      "x": 320,
+      "y": 700,
+      "image": "Stairs_0.jpeg"
+    },
+    {
+      "id": "N8",
+      "name": "Corridor_1_North",
+      "type": "corridor",
+      "x": 300,
+      "y": 480,
+      "image": "Corridor_1_0.jpeg"
+    },
+    {
+      "id": "N9",
+      "name": "IT_Lab_1_Door",
+      "type": "lab",
+      "x": 80,
+      "y": 480,
+      "image": "lab_1_0.jpeg"
+    },
+    {
+      "id": "N10",
+      "name": "Gents_Washroom",
+      "type": "washroom",
+      "x": 180,
+      "y": 350,
+      "image": "gents_washroom_0.jpeg"
+    },
+    {
+      "id": "N11",
+      "name": "Ladies_Washroom",
+      "type": "washroom",
+      "x": 220,
+      "y": 300,
+      "image": "ladies_washroom_0.jpeg"
+    },
+    {
+      "id": "N12",
+      "name": "Corridor_2_West",
+      "type": "corridor",
+      "x": 550,
+      "y": 350,
+      "image": "Corridor_2_.jpeg"
+    },
+    {
+      "id": "N13",
+      "name": "Room_101",
+      "type": "room",
+      "x": 400,
+      "y": 300,
+      "image": "room_101_0.jpeg"
+    },
+    {
+      "id": "N14",
+      "name": "IT_Lab_2_Door",
+      "type": "lab",
+      "x": 550,
+      "y": 300,
+      "image": "lab_2_0.jpeg"
+    },
+    {
+      "id": "N15",
+      "name": "Staff_Room_02",
+      "type": "staff",
+      "x": 700,
+      "y": 300,
+      "image": "saff_room2_0.jpeg"
+    },
+    {
+      "id": "N16",
+      "name": "Corridor_3_South",
+      "type": "corridor",
+      "x": 850,
+      "y": 450,
+      "image": "Corridor_3_0.jpeg"
+    },
+    {
+      "id": "N17",
+      "name": "Lift",
+      "type": "lift",
+      "x": 900,
+      "y": 500,
+      "image": "lift_0.jpeg"
+    },
+    {
+      "id": "N18",
+      "name": "Staff_Room_01",
+      "type": "staff",
+      "x": 900,
+      "y": 350,
+      "image": "staff_room1_0.jpeg"
+    },
+    {
+      "id": "N19",
+      "name": "Room_102",
+      "type": "room",
+      "x": 800,
+      "y": 300,
+      "image": "room_102_0.jpeg"
+    }
   ],
-  "paths": [
-    { "from": "n0", "to": "n1" },
-    { "from": "n1", "to": "n2" },
-    { "from": "n2", "to": "n3" },
-    { "from": "n3", "to": "n4" },
-    { "from": "n4", "to": "n5" },
-    { "from": "n5", "to": "n6" },
-    { "from": "n6", "to": "n7" },
-    { "from": "n7", "to": "n8" },
-    { "from": "n8", "to": "n9" },
-    { "from": "n9", "to": "n10" },
-    { "from": "n10", "to": "n11" },
-    { "from": "n11", "to": "n12" },
-    { "from": "n12", "to": "n13" },
-    { "from": "n13", "to": "n14" },
-    { "from": "n14", "to": "n15" },
-    { "from": "n15", "to": "n16" },
-    { "from": "n16", "to": "n1" }
-  ]
+  "edges": [
+    {
+      "from": "N1",
+      "to": "N2",
+      "distance": 4
+    },
+    {
+      "from": "N2",
+      "to": "N3",
+      "distance": 2
+    },
+    {
+      "from": "N3",
+      "to": "N4",
+      "distance": 2
+    },
+    {
+      "from": "N4",
+      "to": "N5",
+      "distance": 3
+    },
+    {
+      "from": "N2",
+      "to": "N6",
+      "distance": 6
+    },
+    {
+      "from": "N6",
+      "to": "N7",
+      "distance": 3
+    },
+    {
+      "from": "N7",
+      "to": "N8",
+      "distance": 4
+    },
+    {
+      "from": "N8",
+      "to": "N9",
+      "distance": 3
+    },
+    {
+      "from": "N8",
+      "to": "N10",
+      "distance": 2
+    },
+    {
+      "from": "N8",
+      "to": "N11",
+      "distance": 2
+    },
+    {
+      "from": "N8",
+      "to": "N12",
+      "distance": 6
+    },
+    {
+      "from": "N12",
+      "to": "N13",
+      "distance": 2
+    },
+    {
+      "from": "N12",
+      "to": "N14",
+      "distance": 2
+    },
+    {
+      "from": "N12",
+      "to": "N15",
+      "distance": 2
+    },
+    {
+      "from": "N12",
+      "to": "N16",
+      "distance": 5
+    },
+    {
+      "from": "N16",
+      "to": "N17",
+      "distance": 1
+    },
+    {
+      "from": "N16",
+      "to": "N18",
+      "distance": 2
+    },
+    {
+      "from": "N16",
+      "to": "N19",
+      "distance": 3
+    },
+    {
+      "from": "N16",
+      "to": "N2",
+      "distance": 9
+    }
+  ],
+  "metadata": {
+    "photo_folder": "data/Buildings/IT_block/floors/floor0/photos",
+    "photo_count": 19
+  }
 }
-
