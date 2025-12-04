@@ -1,0 +1,42 @@
+{
+  "floor": 0,
+  "nodes": [
+    { "id": "n0", "name": "Entrance", "x": 10, "y": 5 },
+    { "id": "n1", "name": "Corridor Start", "x": 20, "y": 25 },
+    { "id": "n2", "name": "Creative Room", "x": 25, "y": 10 },
+    { "id": "n3", "name": "Room 103", "x": 45, "y": 10 },
+    { "id": "n4", "name": "IT Lab 3", "x": 75, "y": 10 },
+    { "id": "n5", "name": "Corridor Mid", "x": 50, "y": 80 },
+    { "id": "n6", "name": "Lift", "x": 80, "y": 75 },
+    { "id": "n7", "name": "UPS Room", "x": 90, "y": 70 },
+    { "id": "n8", "name": "Room 102", "x": 90, "y": 55 },
+    { "id": "n9", "name": "Staff Room 1", "x": 90, "y": 65 },
+    { "id": "n10", "name": "AIML / HOD", "x": 90, "y": 85 },
+    { "id": "n11", "name": "Staff Room 02", "x": 70, "y": 95 },
+    { "id": "n12", "name": "IT Lab 2", "x": 50, "y": 95 },
+    { "id": "n13", "name": "Room 101", "x": 25, "y": 95 },
+    { "id": "n14", "name": "Girls Washroom", "x": 15, "y": 90 },
+    { "id": "n15", "name": "Boys Washroom", "x": 15, "y": 80 },
+    { "id": "n16", "name": "IT Lab 01", "x": 10, "y": 55 }
+  ],
+  "paths": [
+    { "from": "n0", "to": "n1" },
+    { "from": "n1", "to": "n2" },
+    { "from": "n2", "to": "n3" },
+    { "from": "n3", "to": "n4" },
+    { "from": "n4", "to": "n5" },
+    { "from": "n5", "to": "n6" },
+    { "from": "n6", "to": "n7" },
+    { "from": "n7", "to": "n8" },
+    { "from": "n8", "to": "n9" },
+    { "from": "n9", "to": "n10" },
+    { "from": "n10", "to": "n11" },
+    { "from": "n11", "to": "n12" },
+    { "from": "n12", "to": "n13" },
+    { "from": "n13", "to": "n14" },
+    { "from": "n14", "to": "n15" },
+    { "from": "n15", "to": "n16" },
+    { "from": "n16", "to": "n1" }
+  ]
+}
+
