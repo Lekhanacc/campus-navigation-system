@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IT Block – Floor 0 Navigation</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div>
+        <h1>IT Block – Floor 0</h1>
+        <p class="subtitle">Campus Navigation System – Visual Path & Photos</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="layout">
+    <!-- LEFT: MAP PANEL -->
+    <section class="map-panel">
+      <div class="controls">
+        <div class="control-group">
+          <label for="startNode">Start</label>
+          <select id="startNode"></select>
+        </div>
+        <div class="control-group">
+          <label for="endNode">End</label>
+          <select id="endNode"></select>
+        </div>
+        <button id="findPath">Find Shortest Path</button>
+        <span id="status" class="status"></span>
+      </div>
+
+      <div id="floor-map-container">
+        <img
+          id="floor-map"
+          src="./floormap_0.jpg"
+          alt="IT Block – Floor 0 Map"
+        />
+        <canvas id="floor-canvas"></canvas>
+      </div>
+    </section>
+
+    <!-- RIGHT: STEP-BY-STEP PANEL -->
+    <aside class="info-panel">
+      <h2>Navigation Steps</h2>
+
+      <div id="no-path-message">
+        Select a <strong>start</strong> and <strong>end</strong> node, then click
+        <em>Find Shortest Path</em>.
+      </div>
+
+      <div id="path-panel" class="hidden">
+        <div class="step-header">
+          <button id="prevStep" class="step-btn" type="button">◀ Prev</button>
+          <span id="stepIndicator" class="step-indicator"></span>
+          <button id="nextStep" class="step-btn" type="button">Next ▶</button>
+        </div>
+
+        <div id="step-details">
+          <h3 id="step-title"></h3>
+          <p id="step-description"></p>
+        </div>
+
+        <div class="step-image-wrapper">
+          <img id="step-image" alt="Current step photo" />
+        </div>
+
+        <h4>Full Path</h4>
+        <ol id="step-list"></ol>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="footer">
+    <small>Campus Navigation System – IT Block (Floor 0)</small>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

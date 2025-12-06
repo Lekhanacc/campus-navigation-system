@@ -1,0 +1,203 @@
+{
+  "building": "IT Block",
+  "floor": 0,
+  "notes": "Nodes, edges, descriptions and image references for Floor 0 navigation.",
+  "nodes": [
+    {
+      "id": "N1",
+      "name": "Entrance",
+      "type": "entrance",
+      "x": 80,
+      "y": 950,
+      "description": "Main entrance to the IT block.",
+      "image": "Entrance_0.jpeg"
+    },
+    {
+      "id": "N2",
+      "name": "Creative Room",
+      "type": "room",
+      "x": 230,
+      "y": 950,
+      "description": "Creative workspace next to the entrance.",
+      "image": "creative_area_0.jpeg"
+    },
+    {
+      "id": "N3",
+      "name": "Room 103",
+      "type": "room",
+      "x": 480,
+      "y": 950,
+      "description": "Classroom 103.",
+      "image": "room_103_0.jpeg"
+    },
+    {
+      "id": "N4",
+      "name": "IT Lab 3",
+      "type": "lab",
+      "x": 720,
+      "y": 950,
+      "description": "IT Lab on the right side of the building.",
+      "image": "lab_3_0.jpeg"
+    },
+    {
+      "id": "N5",
+      "name": "Room 102",
+      "type": "room",
+      "x": 980,
+      "y": 950,
+      "description": "Room 102 in the corridor.",
+      "image": "room_102_0.jpeg"
+    },
+    {
+      "id": "N6",
+      "name": "Staff Cabin",
+      "type": "office",
+      "x": 1210,
+      "y": 950,
+      "description": "Faculty and HOD cabin.",
+      "image": "staff_cabin_0.jpeg"
+    },
+    {
+      "id": "N7",
+      "name": "Lab 2",
+      "type": "lab",
+      "x": 1450,
+      "y": 950,
+      "description": "IT Lab 2 located next to the staff cabin.",
+      "image": "lab_2_0.jpeg"
+    },
+    {
+      "id": "N8",
+      "name": "Room 101",
+      "type": "room",
+      "x": 1680,
+      "y": 950,
+      "description": "Classroom 101.",
+      "image": "room_101_0.jpeg"
+    },
+    {
+      "id": "N9",
+      "name": "Washroom",
+      "type": "facility",
+      "x": 1930,
+      "y": 950,
+      "description": "Washrooms for students and faculty.",
+      "image": "washroom_0.jpeg"
+    },
+    {
+      "id": "N10",
+      "name": "Lab 1",
+      "type": "lab",
+      "x": 2170,
+      "y": 950,
+      "description": "First IT lab along the corridor.",
+      "image": "lab_1_0.jpeg"
+    },
+    {
+      "id": "N11",
+      "name": "Stairs",
+      "type": "stairs",
+      "x": 2380,
+      "y": 950,
+      "description": "Staircase to upper floors.",
+      "image": "stairs_0.jpeg"
+    },
+    {
+      "id": "N12",
+      "name": "Corridor A",
+      "type": "corridor",
+      "x": 2380,
+      "y": 750,
+      "description": "Corridor area near the stairs.",
+      "image": "Corridor_0.jpeg"
+    },
+    {
+      "id": "N13",
+      "name": "Corridor B",
+      "type": "corridor",
+      "x": 2380,
+      "y": 520,
+      "description": "Middle section of the corridor.",
+      "image": "Corridor_1_0.jpeg"
+    },
+    {
+      "id": "N14",
+      "name": "Corridor C",
+      "type": "corridor",
+      "x": 2380,
+      "y": 300,
+      "description": "Long corridor stretch.",
+      "image": "Corridor_2_0.jpeg"
+    },
+    {
+      "id": "N15",
+      "name": "Corridor D",
+      "type": "corridor",
+      "x": 2380,
+      "y": 100,
+      "description": "End of the corridor.",
+      "image": "Corridor_3_0.jpeg"
+    },
+    {
+      "id": "N16",
+      "name": "Exit Corner",
+      "type": "exit",
+      "x": 2170,
+      "y": 100,
+      "description": "Exit corner of the building.",
+      "image": "Corridor_4_0.jpeg"
+    },
+    {
+      "id": "N17",
+      "name": "Left Wing Start",
+      "type": "junction",
+      "x": 1930,
+      "y": 100,
+      "description": "Start of the left wing corridor.",
+      "image": "left_corridor_0.jpeg"
+    },
+    {
+      "id": "N18",
+      "name": "Left Wing Middle",
+      "type": "junction",
+      "x": 1680,
+      "y": 100,
+      "description": "Middle of the left wing.",
+      "image": "left_corridor_1_0.jpeg"
+    },
+    {
+      "id": "N19",
+      "name": "Left Wing End",
+      "type": "junction",
+      "x": 1450,
+      "y": 100,
+      "description": "End of the left wing.",
+      "image": "left_corridor_2_0.jpeg"
+    }
+  ],
+
+  "edges": [
+    { "from": "N1", "to": "N2", "distance": 10 },
+    { "from": "N2", "to": "N3", "distance": 10 },
+    { "from": "N3", "to": "N4", "distance": 10 },
+    { "from": "N4", "to": "N5", "distance": 10 },
+    { "from": "N5", "to": "N6", "distance": 10 },
+    { "from": "N6", "to": "N7", "distance": 10 },
+    { "from": "N7", "to": "N8", "distance": 10 },
+    { "from": "N8", "to": "N9", "distance": 10 },
+    { "from": "N9", "to": "N10", "distance": 10 },
+    { "from": "N10", "to": "N11", "distance": 10 },
+
+    { "from": "N11", "to": "N12", "distance": 10 },
+    { "from": "N12", "to": "N13", "distance": 10 },
+    { "from": "N13", "to": "N14", "distance": 10 },
+    { "from": "N14", "to": "N15", "distance": 10 },
+
+    { "from": "N15", "to": "N16", "distance": 10 },
+    { "from": "N16", "to": "N17", "distance": 10 },
+    { "from": "N17", "to": "N18", "distance": 10 },
+    { "from": "N18", "to": "N19", "distance": 10 }
+  ]
+}
+
+   
