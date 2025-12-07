@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Campus Navigation System</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h2>IT Block – Indoor Navigation</h2>
+
+  <div class="controls">
+    <label>Floor:</label>
+    <select id="floorSelect">
+      <option value="floor0">Ground Floor</option>
+      <option value="floor1">First Floor</option>
+    </select>
+
+    <label>Start:</label>
+    <select id="startNode"></select>
+
+    <label>End:</label>
+    <select id="endNode"></select>
+
+    <button id="findPathBtn">Find Path</button>
+  </div>
+
+  <div class="map-container">
+    <img id="floorMap" src="" alt="Floor Map">
+    <canvas id="pathCanvas"></canvas>
+  </div>
+
+  <div id="output"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
