@@ -1,4 +1,4 @@
-/* BASIC LAYOUT */
+/* GENERAL LAYOUT */
 
 *,
 *::before,
@@ -15,12 +15,12 @@ body {
 }
 
 .top-bar {
-  padding: 12px 24px;
-  background: #111827;
-  color: #f9fafb;
   display: flex;
   align-items: baseline;
   gap: 12px;
+  padding: 12px 24px;
+  background: #0f172a;
+  color: #f9fafb;
 }
 
 .top-bar h1 {
@@ -37,10 +37,7 @@ body {
   display: flex;
   gap: 16px;
   padding: 16px;
-  height: calc(100vh - 72px);
 }
-
-/* PANELS */
 
 .map-panel {
   flex: 2;
@@ -48,6 +45,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  overflow-y: auto !important;
 }
 
 .controls-panel {
@@ -59,35 +57,24 @@ body {
   gap: 12px;
 }
 
-.card {
-  background: #ffffff;
-  border-radius: 12px;
-  padding: 12px 14px;
-  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
-}
-
-.card h2 {
-  margin: 0 0 8px;
-  font-size: 16px;
-}
-
-/* MAP + NODES */
+/* MAP + OVERLAY */
 
 #map-container {
+  height: auto !important;
   position: relative;
+  display: inline-block; /* important: container height follows image */
+  border-radius: 14px;
   background: #e5e7eb;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.1);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.16);
 }
 
 #floor-map {
   display: block;
   width: 100%;
-  height: auto;
+  height: auto; /* keeps aspect ratio */
 }
 
-/* SVG overlay that holds the path polyline */
+/* SVG overlay sits exactly on top of the image */
 #path-overlay {
   position: absolute;
   inset: 0;
@@ -96,7 +83,7 @@ body {
   pointer-events: none;
 }
 
-/* Node markers */
+/* NODES */
 
 .map-node {
   position: absolute;
@@ -104,7 +91,7 @@ body {
   height: 12px;
   border-radius: 999px;
   border: 2px solid #ffffff;
-  background: #2563eb; /* normal node */
+  background: #2563eb;
   transform: translate(-50%, -50%);
   cursor: pointer;
 }
@@ -125,17 +112,15 @@ body {
   box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.3);
 }
 
-/* Tiny label near each node (optional) */
-
 .map-node-label {
   position: absolute;
-  white-space: nowrap;
-  font-size: 10px;
-  padding: 2px 4px;
-  border-radius: 6px;
-  background: rgba(17, 24, 39, 0.8);
-  color: #f9fafb;
   transform: translate(-50%, -130%);
+  padding: 2px 6px;
+  font-size: 10px;
+  border-radius: 999px;
+  background: rgba(17, 24, 39, 0.88);
+  color: #f9fafb;
+  white-space: nowrap;
   pointer-events: none;
 }
 
@@ -146,7 +131,7 @@ body {
   flex-wrap: wrap;
   gap: 10px;
   font-size: 11px;
-  padding: 4px 6px;
+  padding: 4px 4px;
 }
 
 .legend-item {
@@ -155,31 +140,39 @@ body {
   gap: 4px;
 }
 
-.legend-node {
-  display: inline-block;
+.legend-dot {
   width: 10px;
   height: 10px;
   border-radius: 999px;
   border: 1px solid #ffffff;
 }
 
-.legend-node.normal {
+.legend-dot.node {
   background: #2563eb;
 }
-
-.legend-node.on-path {
+.legend-dot.path {
   background: #10b981;
 }
-
-.legend-node.start {
+.legend-dot.start {
   background: #22c55e;
 }
-
-.legend-node.end {
+.legend-dot.end {
   background: #ef4444;
 }
 
-/* CONTROLS */
+/* CARDS / CONTROLS */
+
+.card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 12px 14px;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
+}
+
+.card h2 {
+  margin: 0 0 8px;
+  font-size: 16px;
+}
 
 .field-row {
   display: flex;
@@ -205,6 +198,12 @@ select:focus {
   box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.4);
 }
 
+.button-row {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+}
+
 button {
   border: none;
   border-radius: 999px;
@@ -212,7 +211,6 @@ button {
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
-  margin-right: 6px;
 }
 
 #findPathBtn {
@@ -229,26 +227,27 @@ button {
 }
 
 .secondary:hover {
-  filter: brightness(0.97);
+  filter: brightness(0.96);
 }
 
 .hint {
   font-size: 11px;
-  color: #6b7280;
   margin-top: 6px;
+  color: #6b7280;
 }
 
 /* PATH DETAILS */
 
 .path-summary {
   font-size: 13px;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .path-steps {
   max-height: 55vh;
   overflow-y: auto;
   border-top: 1px solid #e5e7eb;
+  margin-top: 6px;
   padding-top: 6px;
   font-size: 12px;
 }
@@ -275,21 +274,21 @@ button {
 
 .step-photo {
   display: block;
-  margin-top: 4px;
   max-width: 100%;
   border-radius: 8px;
+  margin-top: 4px;
 }
 
 /* FOOTER */
 
 .footer {
-  padding: 4px 16px 10px;
+  padding: 6px 16px 10px;
   font-size: 11px;
-  color: #6b7280;
   text-align: right;
+  color: #6b7280;
 }
 
-/* SMALL SCREENS */
+/* RESPONSIVE */
 
 @media (max-width: 900px) {
   .layout {
@@ -300,4 +299,21 @@ button {
   .controls-panel {
     max-width: none;
   }
+}
+#map-container,
+.map-panel {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+}
+
+#floor-map {
+    display: block;
+    width: 100%;
+    height: auto !important;
+}
+/* FIX: Allow full map height */
+.layout {
+    height: auto !important;
+    min-height: 100vh;
 }

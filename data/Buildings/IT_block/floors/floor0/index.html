@@ -15,28 +15,24 @@
     <!-- LEFT: MAP -->
     <section class="map-panel">
       <div id="map-container">
-        <!-- Floor map -->
-        <img
-          id="floor-map"
-          src="floormap_0.jpg"
-          alt="IT Block Ground Floor Map"
-        />
-
-        <!-- Path overlay -->
+        <!-- Floor map image -->
+       <img id="floor-map" src="photos/floormap_0.jpeg" alt="IT Block Ground Floor Map">
+        <!-- Path overlay (SVG) -->
         <svg id="path-overlay"></svg>
       </div>
+
       <div class="legend">
         <span class="legend-item">
-          <span class="legend-node normal"></span> Node
+          <span class="legend-dot node"></span> Node
         </span>
         <span class="legend-item">
-          <span class="legend-node on-path"></span> Path Node
+          <span class="legend-dot path"></span> Path Node
         </span>
         <span class="legend-item">
-          <span class="legend-node start"></span> Start
+          <span class="legend-dot start"></span> Start
         </span>
         <span class="legend-item">
-          <span class="legend-node end"></span> End
+          <span class="legend-dot end"></span> End
         </span>
       </div>
     </section>
@@ -45,16 +41,22 @@
     <section class="controls-panel">
       <div class="card">
         <h2>Choose Route</h2>
+
         <div class="field-row">
           <label for="startNode">Start</label>
           <select id="startNode"></select>
         </div>
+
         <div class="field-row">
           <label for="endNode">Destination</label>
           <select id="endNode"></select>
         </div>
-        <button id="findPathBtn">Find Shortest Path</button>
-        <button id="clearPathBtn" class="secondary">Clear</button>
+
+        <div class="button-row">
+          <button id="findPathBtn">Find Shortest Path</button>
+          <button id="clearPathBtn" class="secondary">Clear</button>
+        </div>
+
         <p class="hint">
           Tip: pick any two rooms, labs, or corridor nodes to see the route.
         </p>
@@ -71,11 +73,12 @@
   </main>
 
   <footer class="footer">
-    <small>Campus Navigation · IT Block Ground Floor</small>
+    <small>Campus Navigation · IT Block – Ground Floor</small>
   </footer>
 
   <script src="script.js" defer></script>
-</body>
+  </body>
 </html>
+
 
 

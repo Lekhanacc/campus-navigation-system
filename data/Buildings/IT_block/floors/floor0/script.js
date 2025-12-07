@@ -1,22 +1,25 @@
-// ------------ GLOBAL STATE ------------
+// ---------- GLOBALS ----------
 
 let navData = null;
 let nodesById = {};
 let edges = [];
-let mapMeta = { width: 1350, height: 768 };
+
+let mapMeta = { width: 976, height: 639 }; // original floormap size (approx)
+let scaleX = 1;
+let scaleY = 1;
+
+const mapContainer = document.getElementById("map-container");
+const floorImg = document.getElementById("floor-map");
+const pathOverlay = document.getElementById("path-overlay");
 
 const startSelect = document.getElementById("startNode");
 const endSelect = document.getElementById("endNode");
 const pathSummaryEl = document.getElementById("path-summary");
 const pathStepsEl = document.getElementById("path-steps");
-const mapContainer = document.getElementById("map-container");
-const floorImg = document.getElementById("floor-map");
-const pathOverlay = document.getElementById("path-overlay");
 
-let scaleX = 1;
-let scaleY = 1;
+let currentPathIds = null;
 
-// ------------ INIT ------------
+// ---------- INIT ----------
 
 window.addEventListener("DOMContentLoaded", () => {
   init();
@@ -25,17 +28,20 @@ window.addEventListener("DOMContentLoaded", () => {
 async function init() {
   try {
     navData = await loadNavigation();
-    if (navData.meta && navData.meta.mapWidth && navData.meta.mapHeight) {
-      mapMeta.width = navData.meta.mapWidth;
-      mapMeta.height = navData.meta.mapHeight;
+
+    if (navData.meta) {
+      if (navData.meta.mapWidth) mapMeta.width = navData.meta.mapWidth;
+      if (navData.meta.mapHeight) mapMeta.height = navData.meta.mapHeight;
     }
 
-    // Build lookup tables
+    // Build index
     navData.nodes.forEach((n) => (nodesById[n.id] = n));
     edges = navData.edges || [];
 
+    // Wait for map image to load, THEN compute scale
     await waitForImageLoad();
     recalcScale();
+
     drawNodes();
     populateDropdowns();
 
@@ -50,25 +56,27 @@ async function init() {
       .addEventListener("click", handleFindPath);
     document
       .getElementById("clearPathBtn")
-      .addEventListener("click", clearPath);
+      .addEventListener("click", () => clearPath(true));
   } catch (err) {
-    console.error("Init error:", err);
-    pathSummaryEl.textContent = "Error loading navigation.json.";
+    console.error(err);
+    pathSummaryEl.textContent = "Error loading navigation data.";
   }
 }
 
 function loadNavigation() {
-  return fetch("navigation.json").then((r) => {
-    if (!r.ok) throw new Error("navigation.json not found");
-    return r.json();
+  return fetch("navigation.json").then((res) => {
+    if (!res.ok) throw new Error("navigation.json not found");
+    return res.json();
   });
 }
 
 function waitForImageLoad() {
-  if (floorImg.complete) return Promise.resolve();
+  if (floorImg.complete && floorImg.naturalWidth > 0) {
+    return Promise.resolve();
+  }
   return new Promise((resolve) => {
     floorImg.onload = () => resolve();
-    floorImg.onerror = () => resolve(); // still resolve to avoid deadlock
+    floorImg.onerror = () => resolve(); // avoid deadlock
   });
 }
 
@@ -78,32 +86,34 @@ function recalcScale() {
   scaleY = rect.height / mapMeta.height;
 }
 
-// ------------ NODES ON MAP ------------
+// ---------- NODES ON MAP ----------
 
-function createNodeElement(node) {
-  const dot = document.createElement("div");
-  dot.className = "map-node";
-  dot.dataset.id = node.id;
+function drawNodes() {
+  navData.nodes.forEach((node) => {
+    const dot = document.createElement("div");
+    dot.className = "map-node";
+    dot.dataset.id = node.id;
 
-  const label = document.createElement("div");
-  label.className = "map-node-label";
-  label.textContent = node.shortName || node.name;
-  dot.appendChild(label);
+    const label = document.createElement("div");
+    label.className = "map-node-label";
+    label.textContent = node.shortName || node.name;
+    dot.appendChild(label);
 
-  dot.addEventListener("click", () => {
-    // Clicking a node fills whichever dropdown is currently empty
-    if (!startSelect.value) {
-      startSelect.value = node.id;
-    } else if (!endSelect.value) {
-      endSelect.value = node.id;
-    } else {
-      startSelect.value = node.id;
-      endSelect.value = "";
-    }
+    dot.addEventListener("click", () => {
+      // Auto-fill selects: click first fills start, second fills end
+      if (!startSelect.value) {
+        startSelect.value = node.id;
+      } else if (!endSelect.value) {
+        endSelect.value = node.id;
+      } else {
+        startSelect.value = node.id;
+        endSelect.value = "";
+      }
+    });
+
+    mapContainer.appendChild(dot);
+    positionNodeElement(dot, node);
   });
-
-  mapContainer.appendChild(dot);
-  positionNodeElement(dot, node);
 }
 
 function positionNodeElement(el, node) {
@@ -120,18 +130,13 @@ function positionAllNodes() {
   });
 }
 
-function drawNodes() {
-  navData.nodes.forEach(createNodeElement);
-}
-
-// ------------ DROPDOWNS ------------
+// ---------- DROPDOWNS ----------
 
 function populateDropdowns() {
-  const sortedNodes = [...navData.nodes].sort((a, b) =>
+  const sorted = [...navData.nodes].sort((a, b) =>
     a.name.localeCompare(b.name)
   );
-
-  sortedNodes.forEach((n) => {
+  sorted.forEach((n) => {
     const opt1 = document.createElement("option");
     opt1.value = n.id;
     opt1.textContent = n.name;
@@ -144,7 +149,7 @@ function populateDropdowns() {
   });
 }
 
-// ------------ A* PATHFINDING ------------
+// ---------- A* PATHFINDING ----------
 
 function neighborsOf(nodeId) {
   const list = [];
@@ -181,7 +186,6 @@ function aStar(startId, endId) {
   fScore[startId] = heuristic(start, goal);
 
   while (openSet.size > 0) {
-    // Node in openSet with lowest fScore
     let currentId = null;
     let bestScore = Infinity;
     openSet.forEach((id) => {
@@ -199,19 +203,21 @@ function aStar(startId, endId) {
     const current = nodesById[currentId];
 
     neighborsOf(currentId).forEach((nb) => {
-      const tentative =
-        gScore[currentId] +
-        (nb.weight != null ? nb.weight : heuristic(current, nodesById[nb.id]));
+      const neighbor = nodesById[nb.id];
+      const stepCost =
+        nb.weight != null ? nb.weight : heuristic(current, neighbor);
+      const tentative = gScore[currentId] + stepCost;
+
       if (tentative < gScore[nb.id]) {
         cameFrom[nb.id] = currentId;
         gScore[nb.id] = tentative;
-        fScore[nb.id] = tentative + heuristic(nodesById[nb.id], goal);
+        fScore[nb.id] = tentative + heuristic(neighbor, goal);
         if (!openSet.has(nb.id)) openSet.add(nb.id);
       }
     });
   }
 
-  return null; // no path
+  return null; // no path found
 }
 
 function reconstructPath(cameFrom, currentId) {
@@ -223,9 +229,7 @@ function reconstructPath(cameFrom, currentId) {
   return totalPath;
 }
 
-// ------------ UI: PATH HANDLING ------------
-
-let currentPathIds = null;
+// ---------- PATH UI ----------
 
 function handleFindPath() {
   const startId = startSelect.value;
@@ -236,16 +240,18 @@ function handleFindPath() {
     return;
   }
   if (startId === endId) {
-    pathSummaryEl.textContent = "Start and destination are the same.";
     clearPath(false);
     highlightSingleNode(startId);
+    pathSummaryEl.textContent = "Start and destination are the same.";
+    pathStepsEl.innerHTML = "";
     return;
   }
 
   const pathIds = aStar(startId, endId);
   if (!pathIds) {
-    pathSummaryEl.textContent = "No path found between those nodes.";
     clearPath(false);
+    pathSummaryEl.textContent = "No path found between these nodes.";
+    pathStepsEl.innerHTML = "";
     return;
   }
 
@@ -253,14 +259,20 @@ function handleFindPath() {
   renderPath(pathIds);
 }
 
-function clearPath(clearText = true) {
+function clearPath(clearText) {
   currentPathIds = null;
-  // Clear node highlight
-  document.querySelectorAll(".map-node").forEach((n) =>
-    n.classList.remove("on-path", "start-node", "end-node")
-  );
-  // Clear SVG path
-  while (pathOverlay.firstChild) pathOverlay.removeChild(pathOverlay.firstChild);
+
+  // clear node highlights
+  document
+    .querySelectorAll(".map-node")
+    .forEach((el) =>
+      el.classList.remove("on-path", "start-node", "end-node")
+    );
+
+  // clear svg
+  while (pathOverlay.firstChild) {
+    pathOverlay.removeChild(pathOverlay.firstChild);
+  }
 
   if (clearText) {
     pathSummaryEl.textContent = "Path cleared. Select a new route.";
@@ -269,26 +281,24 @@ function clearPath(clearText = true) {
 }
 
 function highlightSingleNode(nodeId) {
-  document
-    .querySelectorAll(".map-node")
-    .forEach((n) => n.classList.remove("on-path", "start-node", "end-node"));
   const el = document.querySelector(`.map-node[data-id="${nodeId}"]`);
-  if (el) el.classList.add("start-node");
+  if (!el) return;
+  el.classList.add("start-node");
 }
 
 function renderPath(pathIds) {
   clearPath(false);
 
-  // Highlight nodes on map
+  // highlight nodes
   pathIds.forEach((id, idx) => {
     const el = document.querySelector(`.map-node[data-id="${id}"]`);
     if (!el) return;
     el.classList.add("on-path");
     if (idx === 0) el.classList.add("start-node");
-    else if (idx === pathIds.length - 1) el.classList.add("end-node");
+    if (idx === pathIds.length - 1) el.classList.add("end-node");
   });
 
-  // Draw polyline in SVG coordinates (original map coordinates)
+  // SVG polyline in original coordinate space
   const pointsAttr = pathIds
     .map((id) => {
       const n = nodesById[id];
@@ -309,20 +319,19 @@ function renderPath(pathIds) {
   polyline.setAttribute("opacity", "0.7");
   pathOverlay.appendChild(polyline);
 
-  // Re-apply scale to SVG via viewBox
   pathOverlay.setAttribute(
     "viewBox",
     `0 0 ${mapMeta.width} ${mapMeta.height}`
   );
 
-  // Summary text
+  // text summary
   const start = nodesById[pathIds[0]];
   const end = nodesById[pathIds[pathIds.length - 1]];
   pathSummaryEl.textContent = `Path from ${start.name} to ${end.name} · ${
     pathIds.length - 1
   } steps.`;
 
-  // Step-by-step list
+  // step list with photos
   pathStepsEl.innerHTML = "";
   pathIds.forEach((id, idx) => {
     const n = nodesById[id];
@@ -334,10 +343,12 @@ function renderPath(pathIds) {
     title.textContent = `Step ${idx + 1}: ${n.name}`;
     stepDiv.appendChild(title);
 
-    const meta = document.createElement("div");
-    meta.className = "step-meta";
-    meta.textContent = n.description || "";
-    stepDiv.appendChild(meta);
+    if (n.description) {
+      const meta = document.createElement("div");
+      meta.className = "step-meta";
+      meta.textContent = n.description;
+      stepDiv.appendChild(meta);
+    }
 
     if (n.image) {
       const img = document.createElement("img");
@@ -353,7 +364,5 @@ function renderPath(pathIds) {
 
 function redrawPath(pathIds) {
   if (!pathIds) return;
-  // Just re-position nodes & re-draw SVG polyline (viewBox already correct)
-  clearPath(false);
   renderPath(pathIds);
 }
