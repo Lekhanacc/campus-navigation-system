@@ -37,6 +37,8 @@ body {
   display: flex;
   gap: 16px;
   padding: 16px;
+  height: auto !important;
+  min-height: 100vh;
 }
 
 .map-panel {
@@ -57,12 +59,11 @@ body {
   gap: 12px;
 }
 
-/* MAP + OVERLAY */
+/* MAP */
 
 #map-container {
-  height: auto !important;
   position: relative;
-  display: inline-block; /* important: container height follows image */
+  display: inline-block;
   border-radius: 14px;
   background: #e5e7eb;
   box-shadow: 0 10px 24px rgba(15, 23, 42, 0.16);
@@ -71,10 +72,10 @@ body {
 #floor-map {
   display: block;
   width: 100%;
-  height: auto; /* keeps aspect ratio */
+  height: auto;
 }
 
-/* SVG overlay sits exactly on top of the image */
+/* SVG overlay */
 #path-overlay {
   position: absolute;
   inset: 0;
@@ -83,7 +84,7 @@ body {
   pointer-events: none;
 }
 
-/* NODES */
+/* NODES — NO LABELS */
 
 .map-node {
   position: absolute;
@@ -112,16 +113,9 @@ body {
   box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.3);
 }
 
+/* REMOVED LABELS — Hidden Entirely */
 .map-node-label {
-  position: absolute;
-  transform: translate(-50%, -130%);
-  padding: 2px 6px;
-  font-size: 10px;
-  border-radius: 999px;
-  background: rgba(17, 24, 39, 0.88);
-  color: #f9fafb;
-  white-space: nowrap;
-  pointer-events: none;
+  display: none !important;
 }
 
 /* LEGEND */
@@ -160,7 +154,7 @@ body {
   background: #ef4444;
 }
 
-/* CARDS / CONTROLS */
+/* CARDS */
 
 .card {
   background: #ffffff;
@@ -300,20 +294,4 @@ button {
     max-width: none;
   }
 }
-#map-container,
-.map-panel {
-    height: auto !important;
-    max-height: none !important;
-    overflow: visible !important;
-}
 
-#floor-map {
-    display: block;
-    width: 100%;
-    height: auto !important;
-}
-/* FIX: Allow full map height */
-.layout {
-    height: auto !important;
-    min-height: 100vh;
-}

@@ -4,7 +4,7 @@ let navData = null;
 let nodesById = {};
 let edges = [];
 
-let mapMeta = { width: 976, height: 639 }; // original floormap size (approx)
+let mapMeta = { width: 976, height: 639 };
 let scaleX = 1;
 let scaleY = 1;
 
@@ -18,6 +18,7 @@ const pathSummaryEl = document.getElementById("path-summary");
 const pathStepsEl = document.getElementById("path-steps");
 
 let currentPathIds = null;
+
 
 // ---------- INIT ----------
 
@@ -34,11 +35,9 @@ async function init() {
       if (navData.meta.mapHeight) mapMeta.height = navData.meta.mapHeight;
     }
 
-    // Build index
     navData.nodes.forEach((n) => (nodesById[n.id] = n));
     edges = navData.edges || [];
 
-    // Wait for map image to load, THEN compute scale
     await waitForImageLoad();
     recalcScale();
 
@@ -51,12 +50,9 @@ async function init() {
       redrawPath(currentPathIds);
     });
 
-    document
-      .getElementById("findPathBtn")
-      .addEventListener("click", handleFindPath);
-    document
-      .getElementById("clearPathBtn")
-      .addEventListener("click", () => clearPath(true));
+    document.getElementById("findPathBtn").addEventListener("click", handleFindPath);
+    document.getElementById("clearPathBtn").addEventListener("click", () => clearPath(true));
+
   } catch (err) {
     console.error(err);
     pathSummaryEl.textContent = "Error loading navigation data.";
@@ -71,12 +67,10 @@ function loadNavigation() {
 }
 
 function waitForImageLoad() {
-  if (floorImg.complete && floorImg.naturalWidth > 0) {
-    return Promise.resolve();
-  }
+  if (floorImg.complete && floorImg.naturalWidth > 0) return Promise.resolve();
   return new Promise((resolve) => {
     floorImg.onload = () => resolve();
-    floorImg.onerror = () => resolve(); // avoid deadlock
+    floorImg.onerror = () => resolve();
   });
 }
 
@@ -86,7 +80,8 @@ function recalcScale() {
   scaleY = rect.height / mapMeta.height;
 }
 
-// ---------- NODES ON MAP ----------
+
+// ---------- NODE DRAWING (NO LABELS) ----------
 
 function drawNodes() {
   navData.nodes.forEach((node) => {
@@ -94,18 +89,11 @@ function drawNodes() {
     dot.className = "map-node";
     dot.dataset.id = node.id;
 
-    const label = document.createElement("div");
-    label.className = "map-node-label";
-    label.textContent = node.shortName || node.name;
-    dot.appendChild(label);
-
+    // Node click behavior
     dot.addEventListener("click", () => {
-      // Auto-fill selects: click first fills start, second fills end
-      if (!startSelect.value) {
-        startSelect.value = node.id;
-      } else if (!endSelect.value) {
-        endSelect.value = node.id;
-      } else {
+      if (!startSelect.value) startSelect.value = node.id;
+      else if (!endSelect.value) endSelect.value = node.id;
+      else {
         startSelect.value = node.id;
         endSelect.value = "";
       }
@@ -115,6 +103,7 @@ function drawNodes() {
     positionNodeElement(dot, node);
   });
 }
+
 
 function positionNodeElement(el, node) {
   const x = node.x * scaleX;
@@ -130,34 +119,49 @@ function positionAllNodes() {
   });
 }
 
+
 // ---------- DROPDOWNS ----------
 
 function populateDropdowns() {
-  const sorted = [...navData.nodes].sort((a, b) =>
-    a.name.localeCompare(b.name)
-  );
+  const sorted = [...navData.nodes].sort((a, b) => a.name.localeCompare(b.name));
+
   sorted.forEach((n) => {
-    const opt1 = document.createElement("option");
+    let opt1 = document.createElement("option");
     opt1.value = n.id;
     opt1.textContent = n.name;
     startSelect.appendChild(opt1);
 
-    const opt2 = document.createElement("option");
+    let opt2 = document.createElement("option");
     opt2.value = n.id;
     opt2.textContent = n.name;
     endSelect.appendChild(opt2);
   });
 }
 
-// ---------- A* PATHFINDING ----------
 
+// ---------- PATHFINDING ----------
+
+// Identify stairs/lift nodes = vertical movement
+function isVerticalNode(id) {
+  return id === "STAIRS" || id === "LIFT";
+}
+
+// Do NOT allow stairs & lift inside floor navigation
 function neighborsOf(nodeId) {
   const list = [];
+
   edges.forEach((e) => {
-    if (e.from === nodeId) list.push({ id: e.to, weight: e.weight });
-    else if (e.to === nodeId && !e.oneWay)
-      list.push({ id: e.from, weight: e.weight });
+    let a = e.from;
+    let b = e.to;
+
+    if (isVerticalNode(a) || isVerticalNode(b)) {
+      if (!isVerticalNode(nodeId)) return; // block unless starting on them
+    }
+
+    if (a === nodeId) list.push({ id: b, weight: e.weight });
+    else if (b === nodeId && !e.oneWay) list.push({ id: a, weight: e.weight });
   });
+
   return list;
 }
 
@@ -188,6 +192,7 @@ function aStar(startId, endId) {
   while (openSet.size > 0) {
     let currentId = null;
     let bestScore = Infinity;
+
     openSet.forEach((id) => {
       if (fScore[id] < bestScore) {
         bestScore = fScore[id];
@@ -195,17 +200,14 @@ function aStar(startId, endId) {
       }
     });
 
-    if (currentId === endId) {
-      return reconstructPath(cameFrom, currentId);
-    }
+    if (currentId === endId) return reconstructPath(cameFrom, currentId);
 
     openSet.delete(currentId);
     const current = nodesById[currentId];
 
     neighborsOf(currentId).forEach((nb) => {
       const neighbor = nodesById[nb.id];
-      const stepCost =
-        nb.weight != null ? nb.weight : heuristic(current, neighbor);
+      const stepCost = nb.weight != null ? nb.weight : heuristic(current, neighbor);
       const tentative = gScore[currentId] + stepCost;
 
       if (tentative < gScore[nb.id]) {
@@ -217,17 +219,18 @@ function aStar(startId, endId) {
     });
   }
 
-  return null; // no path found
+  return null;
 }
 
 function reconstructPath(cameFrom, currentId) {
-  const totalPath = [currentId];
+  const path = [currentId];
   while (currentId in cameFrom) {
     currentId = cameFrom[currentId];
-    totalPath.unshift(currentId);
+    path.unshift(currentId);
   }
-  return totalPath;
+  return path;
 }
+
 
 // ---------- PATH UI ----------
 
@@ -239,6 +242,7 @@ function handleFindPath() {
     pathSummaryEl.textContent = "Please select both start and destination.";
     return;
   }
+
   if (startId === endId) {
     clearPath(false);
     highlightSingleNode(startId);
@@ -262,17 +266,11 @@ function handleFindPath() {
 function clearPath(clearText) {
   currentPathIds = null;
 
-  // clear node highlights
-  document
-    .querySelectorAll(".map-node")
-    .forEach((el) =>
-      el.classList.remove("on-path", "start-node", "end-node")
-    );
+  document.querySelectorAll(".map-node").forEach((el) =>
+    el.classList.remove("on-path", "start-node", "end-node")
+  );
 
-  // clear svg
-  while (pathOverlay.firstChild) {
-    pathOverlay.removeChild(pathOverlay.firstChild);
-  }
+  while (pathOverlay.firstChild) pathOverlay.removeChild(pathOverlay.firstChild);
 
   if (clearText) {
     pathSummaryEl.textContent = "Path cleared. Select a new route.";
@@ -282,34 +280,24 @@ function clearPath(clearText) {
 
 function highlightSingleNode(nodeId) {
   const el = document.querySelector(`.map-node[data-id="${nodeId}"]`);
-  if (!el) return;
-  el.classList.add("start-node");
+  if (el) el.classList.add("start-node");
 }
 
 function renderPath(pathIds) {
   clearPath(false);
 
-  // highlight nodes
   pathIds.forEach((id, idx) => {
     const el = document.querySelector(`.map-node[data-id="${id}"]`);
     if (!el) return;
+
     el.classList.add("on-path");
     if (idx === 0) el.classList.add("start-node");
     if (idx === pathIds.length - 1) el.classList.add("end-node");
   });
 
-  // SVG polyline in original coordinate space
-  const pointsAttr = pathIds
-    .map((id) => {
-      const n = nodesById[id];
-      return `${n.x},${n.y}`;
-    })
-    .join(" ");
+  const polyline = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+  const pointsAttr = pathIds.map((id) => `${nodesById[id].x},${nodesById[id].y}`).join(" ");
 
-  const polyline = document.createElementNS(
-    "http://www.w3.org/2000/svg",
-    "polyline"
-  );
   polyline.setAttribute("points", pointsAttr);
   polyline.setAttribute("fill", "none");
   polyline.setAttribute("stroke", "#10b981");
@@ -317,24 +305,19 @@ function renderPath(pathIds) {
   polyline.setAttribute("stroke-linecap", "round");
   polyline.setAttribute("stroke-linejoin", "round");
   polyline.setAttribute("opacity", "0.7");
+
   pathOverlay.appendChild(polyline);
+  pathOverlay.setAttribute("viewBox", `0 0 ${mapMeta.width} ${mapMeta.height}`);
 
-  pathOverlay.setAttribute(
-    "viewBox",
-    `0 0 ${mapMeta.width} ${mapMeta.height}`
-  );
-
-  // text summary
   const start = nodesById[pathIds[0]];
   const end = nodesById[pathIds[pathIds.length - 1]];
-  pathSummaryEl.textContent = `Path from ${start.name} to ${end.name} · ${
-    pathIds.length - 1
-  } steps.`;
+  pathSummaryEl.textContent = `Path from ${start.name} to ${end.name} · ${pathIds.length - 1} steps.`;
 
-  // step list with photos
+  // Step images
   pathStepsEl.innerHTML = "";
   pathIds.forEach((id, idx) => {
     const n = nodesById[id];
+
     const stepDiv = document.createElement("div");
     stepDiv.className = "step-item";
 
@@ -363,6 +346,6 @@ function renderPath(pathIds) {
 }
 
 function redrawPath(pathIds) {
-  if (!pathIds) return;
-  renderPath(pathIds);
+  if (pathIds) renderPath(pathIds);
 }
+
