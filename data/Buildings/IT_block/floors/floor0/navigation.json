@@ -1,203 +1,200 @@
 {
   "building": "IT Block",
   "floor": 0,
-  "notes": "Nodes, edges, descriptions and image references for Floor 0 navigation.",
+  "meta": {
+    "mapWidth": 1350,
+    "mapHeight": 768,
+    "notes": "Coordinates in pixels relative to original floormap_0.jpg."
+  },
   "nodes": [
     {
-      "id": "N1",
-      "name": "Entrance",
+      "id": "N_ENTRANCE",
+      "name": "IT Block Entrance",
+      "shortName": "Entrance",
       "type": "entrance",
-      "x": 80,
-      "y": 950,
-      "description": "Main entrance to the IT block.",
-      "image": "Entrance_0.jpeg"
+      "x": 150,
+      "y": 640,
+      "description": "Main entrance to the IT Block.",
+      "image": "Entrance.jpg"
     },
     {
-      "id": "N2",
-      "name": "Creative Room",
+      "id": "N_CREATIVE",
+      "name": "Creative Arena",
+      "shortName": "Creative",
       "type": "room",
-      "x": 230,
-      "y": 950,
-      "description": "Creative workspace next to the entrance.",
-      "image": "creative_area_0.jpeg"
+      "x": 300,
+      "y": 640,
+      "description": "Creative Arena next to the entrance.",
+      "image": "Creative_Arena.jpg"
     },
     {
-      "id": "N3",
-      "name": "Room 103",
-      "type": "room",
-      "x": 480,
-      "y": 950,
-      "description": "Classroom 103.",
-      "image": "room_103_0.jpeg"
+      "id": "N_ITGF03",
+      "name": "IT GF - 03",
+      "shortName": "IT GF-03",
+      "type": "classroom",
+      "x": 500,
+      "y": 640,
+      "description": "Ground floor classroom 03.",
+      "image": "IT_GF_03.jpg"
     },
     {
-      "id": "N4",
-      "name": "IT Lab 3",
+      "id": "N_ITLAB02",
+      "name": "IT LAB - 02",
+      "shortName": "Lab-02",
       "type": "lab",
       "x": 720,
-      "y": 950,
-      "description": "IT Lab on the right side of the building.",
-      "image": "lab_3_0.jpeg"
+      "y": 640,
+      "description": "IT Laboratory 02.",
+      "image": "IT_Lab_02.jpg"
     },
     {
-      "id": "N5",
-      "name": "Room 102",
-      "type": "room",
-      "x": 980,
-      "y": 950,
-      "description": "Room 102 in the corridor.",
-      "image": "room_102_0.jpeg"
+      "id": "N_GRADIENT",
+      "name": "Gradient Hall",
+      "shortName": "Gradient",
+      "type": "hall",
+      "x": 950,
+      "y": 640,
+      "description": "Gradient Hall at the end of Corridor-4.",
+      "image": "Gradient_Hall.jpg"
     },
     {
-      "id": "N6",
-      "name": "Staff Cabin",
+      "id": "N_STAFF03",
+      "name": "Staff Room - 03",
+      "shortName": "Staff-03",
+      "type": "staffroom",
+      "x": 950,
+      "y": 500,
+      "description": "Staff Room 03.",
+      "image": "Staff_Room_03.jpg"
+    },
+    {
+      "id": "N_ITGF02",
+      "name": "IT GF - 02",
+      "shortName": "IT GF-02",
+      "type": "classroom",
+      "x": 950,
+      "y": 380,
+      "description": "Ground floor classroom 02.",
+      "image": "IT_GF_02.jpg"
+    },
+    {
+      "id": "N_STAFF02",
+      "name": "Staff Room - 02",
+      "shortName": "Staff-02",
+      "type": "staffroom",
+      "x": 950,
+      "y": 270,
+      "description": "Staff Room 02.",
+      "image": "Staff_Room_02.jpg"
+    },
+    {
+      "id": "N_HOD",
+      "name": "HOD AI-ML",
+      "shortName": "HOD",
       "type": "office",
-      "x": 1210,
-      "y": 950,
-      "description": "Faculty and HOD cabin.",
-      "image": "staff_cabin_0.jpeg"
+      "x": 950,
+      "y": 150,
+      "description": "Head of Department AI & ML.",
+      "image": "HOD_AIML.jpg"
     },
     {
-      "id": "N7",
-      "name": "Lab 2",
+      "id": "N_STAFF01",
+      "name": "Staff Room - 01",
+      "shortName": "Staff-01",
+      "type": "staffroom",
+      "x": 720,
+      "y": 120,
+      "description": "Staff Room 01 near corridor-2.",
+      "image": "Staff_Room_01.jpg"
+    },
+    {
+      "id": "N_ITLAB01",
+      "name": "IT LAB - 01",
+      "shortName": "Lab-01",
       "type": "lab",
-      "x": 1450,
-      "y": 950,
-      "description": "IT Lab 2 located next to the staff cabin.",
-      "image": "lab_2_0.jpeg"
+      "x": 520,
+      "y": 120,
+      "description": "IT Laboratory 01.",
+      "image": "IT_Lab_01.jpg"
     },
     {
-      "id": "N8",
-      "name": "Room 101",
-      "type": "room",
-      "x": 1680,
-      "y": 950,
-      "description": "Classroom 101.",
-      "image": "room_101_0.jpeg"
+      "id": "N_ITGF01",
+      "name": "IT GF - 01",
+      "shortName": "IT GF-01",
+      "type": "classroom",
+      "x": 360,
+      "y": 120,
+      "description": "Ground floor classroom 01.",
+      "image": "IT_GF_01.jpg"
     },
     {
-      "id": "N9",
-      "name": "Washroom",
-      "type": "facility",
-      "x": 1930,
-      "y": 950,
-      "description": "Washrooms for students and faculty.",
-      "image": "washroom_0.jpeg"
+      "id": "N_WASH",
+      "name": "Wash Rooms",
+      "shortName": "Wash",
+      "type": "washroom",
+      "x": 150,
+      "y": 120,
+      "description": "Washrooms block.",
+      "image": "Washrooms.jpg"
     },
     {
-      "id": "N10",
-      "name": "Lab 1",
+      "id": "N_AIML_LAB",
+      "name": "AI & ML Synergy Lab",
+      "shortName": "AI&ML Lab",
       "type": "lab",
-      "x": 2170,
-      "y": 950,
-      "description": "First IT lab along the corridor.",
-      "image": "lab_1_0.jpeg"
+      "x": 150,
+      "y": 380,
+      "description": "AI & ML Synergy Lab.",
+      "image": "AIML_Synergy_Lab.jpg"
     },
     {
-      "id": "N11",
+      "id": "N_STAIRS",
       "name": "Stairs",
+      "shortName": "Stairs",
       "type": "stairs",
-      "x": 2380,
-      "y": 950,
+      "x": 350,
+      "y": 500,
       "description": "Staircase to upper floors.",
-      "image": "stairs_0.jpeg"
+      "image": "Stairs_0.jpg"
     },
     {
-      "id": "N12",
-      "name": "Corridor A",
-      "type": "corridor",
-      "x": 2380,
-      "y": 750,
-      "description": "Corridor area near the stairs.",
-      "image": "Corridor_0.jpeg"
-    },
-    {
-      "id": "N13",
-      "name": "Corridor B",
-      "type": "corridor",
-      "x": 2380,
-      "y": 520,
-      "description": "Middle section of the corridor.",
-      "image": "Corridor_1_0.jpeg"
-    },
-    {
-      "id": "N14",
-      "name": "Corridor C",
-      "type": "corridor",
-      "x": 2380,
-      "y": 300,
-      "description": "Long corridor stretch.",
-      "image": "Corridor_2_0.jpeg"
-    },
-    {
-      "id": "N15",
-      "name": "Corridor D",
-      "type": "corridor",
-      "x": 2380,
-      "y": 100,
-      "description": "End of the corridor.",
-      "image": "Corridor_3_0.jpeg"
-    },
-    {
-      "id": "N16",
-      "name": "Exit Corner",
-      "type": "exit",
-      "x": 2170,
-      "y": 100,
-      "description": "Exit corner of the building.",
-      "image": "Corridor_4_0.jpeg"
-    },
-    {
-      "id": "N17",
-      "name": "Left Wing Start",
-      "type": "junction",
-      "x": 1930,
-      "y": 100,
-      "description": "Start of the left wing corridor.",
-      "image": "left_corridor_0.jpeg"
-    },
-    {
-      "id": "N18",
-      "name": "Left Wing Middle",
-      "type": "junction",
-      "x": 1680,
-      "y": 100,
-      "description": "Middle of the left wing.",
-      "image": "left_corridor_1_0.jpeg"
-    },
-    {
-      "id": "N19",
-      "name": "Left Wing End",
-      "type": "junction",
-      "x": 1450,
-      "y": 100,
-      "description": "End of the left wing.",
-      "image": "left_corridor_2_0.jpeg"
+      "id": "N_LIFT",
+      "name": "Lift",
+      "shortName": "Lift",
+      "type": "lift",
+      "x": 700,
+      "y": 280,
+      "description": "Lift near Corridor-3.",
+      "image": "Lift_0.jpg"
     }
   ],
-
   "edges": [
-    { "from": "N1", "to": "N2", "distance": 10 },
-    { "from": "N2", "to": "N3", "distance": 10 },
-    { "from": "N3", "to": "N4", "distance": 10 },
-    { "from": "N4", "to": "N5", "distance": 10 },
-    { "from": "N5", "to": "N6", "distance": 10 },
-    { "from": "N6", "to": "N7", "distance": 10 },
-    { "from": "N7", "to": "N8", "distance": 10 },
-    { "from": "N8", "to": "N9", "distance": 10 },
-    { "from": "N9", "to": "N10", "distance": 10 },
-    { "from": "N10", "to": "N11", "distance": 10 },
+    { "from": "N_ENTRANCE", "to": "N_CREATIVE" },
+    { "from": "N_CREATIVE", "to": "N_ITGF03" },
+    { "from": "N_ITGF03", "to": "N_ITLAB02" },
+    { "from": "N_ITLAB02", "to": "N_GRADIENT" },
 
-    { "from": "N11", "to": "N12", "distance": 10 },
-    { "from": "N12", "to": "N13", "distance": 10 },
-    { "from": "N13", "to": "N14", "distance": 10 },
-    { "from": "N14", "to": "N15", "distance": 10 },
+    { "from": "N_GRADIENT", "to": "N_STAFF03" },
+    { "from": "N_STAFF03", "to": "N_ITGF02" },
+    { "from": "N_ITGF02", "to": "N_STAFF02" },
+    { "from": "N_STAFF02", "to": "N_HOD" },
 
-    { "from": "N15", "to": "N16", "distance": 10 },
-    { "from": "N16", "to": "N17", "distance": 10 },
-    { "from": "N17", "to": "N18", "distance": 10 },
-    { "from": "N18", "to": "N19", "distance": 10 }
+    { "from": "N_HOD", "to": "N_STAFF01" },
+    { "from": "N_STAFF01", "to": "N_ITLAB01" },
+    { "from": "N_ITLAB01", "to": "N_ITGF01" },
+    { "from": "N_ITGF01", "to": "N_WASH" },
+
+    { "from": "N_WASH", "to": "N_AIML_LAB" },
+    { "from": "N_AIML_LAB", "to": "N_ENTRANCE" },
+
+    { "from": "N_ENTRANCE", "to": "N_STAIRS" },
+    { "from": "N_ITGF03", "to": "N_STAIRS" },
+
+    { "from": "N_STAFF01", "to": "N_LIFT" },
+    { "from": "N_ITGF02", "to": "N_LIFT" }
   ]
 }
+
+
 
    
