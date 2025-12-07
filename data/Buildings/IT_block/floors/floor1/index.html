@@ -1,37 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Campus Navigation System</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>IT Block – First Floor Navigation</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <h2>IT Block – Indoor Navigation</h2>
+<header class="top-bar">
+  <h1>IT Block – First Floor Navigation</h1>
+  <span class="subtitle">Floor 1 · A* Path Finder</span>
+</header>
 
-  <div class="controls">
-    <label>Floor:</label>
-    <select id="floorSelect">
-      <option value="floor0">Ground Floor</option>
-      <option value="floor1">First Floor</option>
-    </select>
+<main class="layout">
 
-    <label>Start:</label>
-    <select id="startNode"></select>
+  <!-- LEFT PANEL -->
+  <section class="map-panel">
+    <div id="map-container">
+      <img id="floorMap" src="photos/floormap_1.jpeg" alt="First Floor Map">
+      <svg id="pathLayer"></svg>
+      <div id="nodesLayer"></div>
+    </div>
 
-    <label>End:</label>
-    <select id="endNode"></select>
+    <div class="legend">
+      <span class="legend-item"><span class="legend-dot node"></span> Node</span>
+      <span class="legend-item"><span class="legend-dot path"></span> Path Node</span>
+      <span class="legend-item"><span class="legend-dot start"></span> Start</span>
+      <span class="legend-item"><span class="legend-dot end"></span> End</span>
+    </div>
+  </section>
 
-    <button id="findPathBtn">Find Path</button>
-  </div>
+  <!-- RIGHT PANEL -->
+  <section class="controls-panel">
 
-  <div class="map-container">
-    <img id="floorMap" src="" alt="Floor Map">
-    <canvas id="pathCanvas"></canvas>
-  </div>
+    <div class="card">
+      <h2>Choose Route</h2>
 
-  <div id="output"></div>
+      <div class="field-row">
+        <label for="startNode">Start</label>
+        <select id="startNode"></select>
+      </div>
 
-  <script src="script.js"></script>
+      <div class="field-row">
+        <label for="endNode">Destination</label>
+        <select id="endNode"></select>
+      </div>
+
+      <div class="button-row">
+        <button id="findPathBtn">Find Shortest Path</button>
+        <button id="clearBtn" class="secondary">Clear</button>
+      </div>
+
+      <p class="hint">
+        Tip: choose any two rooms, labs, washroom, stairs, or lift.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>Path Details</h2>
+      <div id="pathSummary" class="path-summary">
+        Select a start and destination.
+      </div>
+      <div id="pathSteps" class="path-steps"></div>
+    </div>
+
+  </section>
+</main>
+
+<footer class="footer">
+  <small>Campus Navigation · IT Block – First Floor</small>
+</footer>
+
+<script src="script.js" defer></script>
+
 </body>
 </html>

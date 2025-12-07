@@ -187,32 +187,29 @@
       "image": "lift.jpeg"
     }
   ],
-
   "edges": [
-    { "from": "WASHROOM", "to": "ITGF01" },
-    { "from": "ITGF01", "to": "ITLAB01" },
-    { "from": "ITLAB01", "to": "STAFF01" },
-    { "from": "STAFF01", "to": "HOD" },
+  { "from": "WASHROOM", "to": "ITGF01" },
+  { "from": "ITGF01", "to": "ITLAB01" },
+  { "from": "ITLAB01", "to": "STAFF01" },
+  { "from": "STAFF01", "to": "HOD" },
 
-    { "from": "HOD", "to": "STAFF02" },
-    { "from": "STAFF02", "to": "ITGF02" },
-    { "from": "ITGF02", "to": "STAFF03" },
-    { "from": "STAFF03", "to": "GRADIENT" },
+  { "from": "HOD", "to": "STAFF02" },
+  { "from": "STAFF02", "to": "ITGF02" },
+  { "from": "ITGF02", "to": "STAFF03" },
+  { "from": "STAFF03", "to": "GRADIENT" },
 
-    { "from": "GRADIENT", "to": "ITLAB02" },
-    { "from": "ITLAB02", "to": "ITGF03" },
-    { "from": "ITGF03", "to": "CREATIVE" },
-    { "from": "CREATIVE", "to": "ENTRANCE" },
+  { "from": "GRADIENT", "to": "ITLAB02" },
+  { "from": "ITLAB02", "to": "ITGF03" },
+  { "from": "ITGF03", "to": "CREATIVE" },
+  { "from": "CREATIVE", "to": "ENTRANCE" },
 
-    { "from": "ENTRANCE", "to": "AIML" },
-    { "from": "AIML", "to": "WASHROOM" },
+  { "from": "ENTRANCE", "to": "AIML" },
+  { "from": "AIML", "to": "WASHROOM" },
 
-    { "from": "ENTRANCE", "to": "STAIRS" },
-    { "from": "ITGF03", "to": "STAIRS" },
+  { "from": "ENTRANCE", "to": "STAIRS" },
 
-    { "from": "STAFF01", "to": "LIFT" },
-    { "from": "ITGF02", "to": "LIFT" }
-  ]
+  { "from": "STAFF01", "to": "LIFT" },
+  { "from": "ITGF02", "to": "LIFT" }
+]
 }
-
    

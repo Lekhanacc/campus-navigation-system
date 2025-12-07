@@ -1,179 +1,337 @@
-let navigationData = null;
-let mapImg = document.getElementById("floorMap");
-let canvas = document.getElementById("pathCanvas");
-let ctx = canvas.getContext("2d");
+// script.js – First Floor Navigation (A*)
 
-const floorSelect = document.getElementById("floorSelect");
-const startNodeSelect = document.getElementById("startNode");
-const endNodeSelect = document.getElementById("endNode");
-const outputDiv = document.getElementById("output");
+let navData = null;
+let nodesById = {};
+let adjacency = {};
+let mapImg = null;
 
-floorSelect.addEventListener("change", loadFloorData);
-document.getElementById("findPathBtn").addEventListener("click", findPath);
+window.addEventListener("DOMContentLoaded", () => {
+  mapImg = document.getElementById("floorMap");
+  loadNavigation();
+  document.getElementById("findPathBtn").addEventListener("click", onFindPath);
+  document.getElementById("clearBtn").addEventListener("click", clearPath);
+  window.addEventListener("resize", () => {
+    if (navData) {
+      renderNodes();
+      drawPath(currentPathIds);
+    }
+  });
+});
 
-loadFloorData(); // load floor 0 initially
-
-async function loadFloorData() {
-  const floor = floorSelect.value;
-  const jsonPath = `data/Buildings/IT_block/floors/${floor}/navigation.json`;
-  const mapPath = `data/Buildings/IT_block/floors/${floor}/floormap_1.jpg`;
-
+async function loadNavigation() {
   try {
-    const response = await fetch(jsonPath);
-    navigationData = await response.json();
-  } catch (err) {
-    alert("Error loading navigation JSON");
+    const res = await fetch("navigation.json");
+    navData = await res.json();
+
+    navData.nodes.forEach((n) => {
+      nodesById[n.id] = n;
+    });
+
+    // build adjacency
+    navData.edges.forEach((e) => {
+      if (!adjacency[e.from]) adjacency[e.from] = [];
+      if (!adjacency[e.to]) adjacency[e.to] = [];
+      adjacency[e.from].push(e.to);
+      adjacency[e.to].push(e.from);
+    });
+
+    // set map image
+    const mapPath = navData.meta && navData.meta.mapImage
+      ? navData.meta.mapImage
+      : "photos/floormap_1.jpeg";
+    mapImg.src = mapPath;
+
+    mapImg.addEventListener("load", () => {
+      populateDropdowns();
+      renderNodes();
+      applyUrlStartSelection();
+    });
+  } catch(err) {
+  console.error(err);
+  pathSummaryEl.textContent = "Error loading navigation data.";
+}
+}
+
+function populateDropdowns() {
+  const startSel = document.getElementById("startNode");
+  const endSel = document.getElementById("endNode");
+
+  startSel.innerHTML = "";
+  endSel.innerHTML = "";
+
+  const eligible = navData.nodes
+    .filter((n) => n.type !== "stairs" && n.type !== "lift") // can tweak
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  for (const node of eligible) {
+    const opt1 = new Option(node.name, node.id);
+    const opt2 = new Option(node.name, node.id);
+    startSel.add(opt1);
+    endSel.add(opt2);
+  }
+
+  startSel.selectedIndex = 0;
+  endSel.selectedIndex = eligible.length > 1 ? 1 : 0;
+}
+
+function getScale() {
+  const meta = navData.meta;
+  const w = mapImg.clientWidth;
+  const h = mapImg.clientHeight;
+  const scaleX = w / meta.mapWidth;
+  const scaleY = h / meta.mapHeight;
+  return { scaleX, scaleY };
+}
+
+function renderNodes() {
+  const layer = document.getElementById("nodesLayer");
+  layer.innerHTML = "";
+
+  const { scaleX, scaleY } = getScale();
+
+  navData.nodes.forEach((node) => {
+    const dot = document.createElement("div");
+    dot.className = "node-dot";
+    dot.dataset.id = node.id;
+
+    const x = node.x * scaleX;
+    const y = node.y * scaleY;
+
+    dot.style.left = `${x}px`;
+    dot.style.top = `${y}px`;
+
+    dot.title = node.name;
+    dot.addEventListener("click", () => handleNodeClick(node.id));
+    layer.appendChild(dot);
+    applyUrlSelection();
+  });
+
+  // Resize SVG
+  const svg = document.getElementById("pathLayer");
+  svg.setAttribute("width", mapImg.clientWidth);
+  svg.setAttribute("height", mapImg.clientHeight);
+}
+
+let clickSelection = { first: null };
+let currentPathIds = null;
+
+function handleNodeClick(nodeId) {
+  const startSel = document.getElementById("startNode");
+  const endSel = document.getElementById("endNode");
+
+  if (!clickSelection.first) {
+    clickSelection.first = nodeId;
+    startSel.value = nodeId;
+  } else {
+    endSel.value = nodeId;
+    clickSelection.first = null;
+    onFindPath();
+  }
+}
+
+function onFindPath() {
+  const startId = document.getElementById("startNode").value;
+  const endId = document.getElementById("endNode").value;
+
+  if (!startId || !endId) {
+    alert("Please select both start and destination.");
+    return;
+  }
+  if (startId === endId) {
+    alert("Start and destination are the same.");
     return;
   }
 
-  // load floor map image
-  mapImg.src = mapPath;
-  mapImg.onload = () => {
-    canvas.width = mapImg.width;
-    canvas.height = mapImg.height;
-
-    loadNodeDropdowns();
-    drawNodes();
-  };
-}
-
-// Load start/end dropdowns
-function loadNodeDropdowns() {
-  startNodeSelect.innerHTML = "";
-  endNodeSelect.innerHTML = "";
-
-  navigationData.nodes.forEach(n => {
-    let op1 = document.createElement("option");
-    op1.value = n.id;
-    op1.textContent = n.name;
-    startNodeSelect.appendChild(op1);
-
-    let op2 = document.createElement("option");
-    op2.value = n.id;
-    op2.textContent = n.name;
-    endNodeSelect.appendChild(op2);
-  });
-}
-
-// Draw nodes as yellow dots
-function drawNodes() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  navigationData.nodes.forEach(node => {
-    ctx.beginPath();
-    ctx.arc(node.x, node.y, 6, 0, Math.PI * 2);
-    ctx.fillStyle = "yellow";
-    ctx.fill();
-    ctx.strokeStyle = "black";
-    ctx.stroke();
-  });
-}
-
-// Get node object by ID
-function getNode(id) {
-  return navigationData.nodes.find(n => n.id === id);
-}
-
-// A* Pathfinding
-function findPath() {
-  let startId = startNodeSelect.value;
-  let endId = endNodeSelect.value;
-
-  let path = aStar(startId, endId);
-
-  if (path.length === 0) {
-    outputDiv.textContent = "No path found.";
+  const path = aStar(startId, endId);
+  if (!path) {
+    document.getElementById("pathSummary").textContent =
+      "No path found between these two nodes.";
+    document.getElementById("pathSteps").innerHTML = "";
+    drawPath(null);
     return;
   }
 
+  currentPathIds = path;
   drawPath(path);
+  renderPathDetails(path);
+}
 
-  // step-by-step navigation
-  let steps = "📌 Navigation Steps:\n\n";
-  path.forEach((pid, i) => {
-    const n = getNode(pid);
-    steps += `${i + 1}. ${n.name}\n`;
+function clearPath() {
+  currentPathIds = null;
+  document.getElementById("pathSummary").textContent =
+    "Select a start and destination to see the route.";
+  document.getElementById("pathSteps").innerHTML = "";
+  const svg = document.getElementById("pathLayer");
+  svg.innerHTML = "";
+  document.querySelectorAll(".node-dot").forEach(n =>
+  n.classList.remove("start", "end", "on-path")
+);
+
+}
+
+// ----- A* implementation -----
+
+function distance(a, b) {
+  const na = nodesById[a];
+  const nb = nodesById[b];
+  const dx = na.x - nb.x;
+  const dy = na.y - nb.y;
+  return Math.sqrt(dx * dx + dy * dy);
+}
+
+function aStar(startId, goalId) {
+  const openSet = new Set([startId]);
+  const cameFrom = {};
+  const gScore = {};
+  const fScore = {};
+
+  Object.keys(nodesById).forEach((id) => {
+    gScore[id] = Infinity;
+    fScore[id] = Infinity;
   });
 
-  outputDiv.textContent = steps;
-}
-
-function drawPath(path) {
-  drawNodes();
-  ctx.strokeStyle = "red";
-  ctx.lineWidth = 4;
-  ctx.beginPath();
-
-  let firstNode = getNode(path[0]);
-  ctx.moveTo(firstNode.x, firstNode.y);
-
-  for (let i = 1; i < path.length; i++) {
-    let n = getNode(path[i]);
-    ctx.lineTo(n.x, n.y);
-  }
-
-  ctx.stroke();
-}
-
-// A* algorithm implementation
-function aStar(startId, goalId) {
-  let openSet = [startId];
-  let cameFrom = {};
-
-  let gScore = {};
-  navigationData.nodes.forEach(n => gScore[n.id] = Infinity);
   gScore[startId] = 0;
+  fScore[startId] = distance(startId, goalId);
 
-  let fScore = {};
-  navigationData.nodes.forEach(n => fScore[n.id] = Infinity);
-  fScore[startId] = heuristic(startId, goalId);
-
-  while (openSet.length > 0) {
-    let current = openSet.reduce((a, b) =>
-      fScore[a] < fScore[b] ? a : b
-    );
+  while (openSet.size > 0) {
+    // choose node in openSet with lowest fScore
+    let current = null;
+    let bestScore = Infinity;
+    openSet.forEach((id) => {
+      if (fScore[id] < bestScore) {
+        bestScore = fScore[id];
+        current = id;
+      }
+    });
 
     if (current === goalId) {
       return reconstructPath(cameFrom, current);
     }
 
-    openSet = openSet.filter(n => n !== current);
+    openSet.delete(current);
+    const neighbors = adjacency[current] || [];
 
-    let neighbors = navigationData.edges
-      .filter(e => e.from === current)
-      .map(e => e.to)
-      .concat(
-        navigationData.edges
-          .filter(e => e.to === current)
-          .map(e => e.from)
-      );
-
-    for (let neighbor of neighbors) {
-      let tentative_gScore = gScore[current] + 1;
-
-      if (tentative_gScore < gScore[neighbor]) {
-        cameFrom[neighbor] = current;
-        gScore[neighbor] = tentative_gScore;
-        fScore[neighbor] = tentative_gScore + heuristic(neighbor, goalId);
-
-        if (!openSet.includes(neighbor)) openSet.push(neighbor);
+    neighbors.forEach((nbr) => {
+      const tentative = gScore[current] + distance(current, nbr);
+      if (tentative < gScore[nbr]) {
+        cameFrom[nbr] = current;
+        gScore[nbr] = tentative;
+        fScore[nbr] = tentative + distance(nbr, goalId);
+        if (!openSet.has(nbr)) openSet.add(nbr);
       }
-    }
+    });
   }
-  return [];
+
+  return null; // no path
 }
 
 function reconstructPath(cameFrom, current) {
-  let totalPath = [current];
+  const path = [current];
   while (current in cameFrom) {
     current = cameFrom[current];
-    totalPath.unshift(current);
+    path.unshift(current);
   }
-  return totalPath;
+  return path;
 }
 
-function heuristic(id1, id2) {
-  let a = getNode(id1);
-  let b = getNode(id2);
-  return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
+// ----- Draw path on SVG -----
+function drawPath(pathIds) {
+  const svg = document.getElementById("pathLayer");
+  svg.innerHTML = "";
+  if (!pathIds || pathIds.length < 2) return;
+
+  // Use raw coordinates + viewBox
+  svg.setAttribute("viewBox", `0 0 ${navData.meta.mapWidth} ${navData.meta.mapHeight}`);
+
+  for (let i = 0; i < pathIds.length - 1; i++) {
+    const a = nodesById[pathIds[i]];
+    const b = nodesById[pathIds[i + 1]];
+
+    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    line.setAttribute("x1", a.x);
+    line.setAttribute("y1", a.y);
+    line.setAttribute("x2", b.x);
+    line.setAttribute("y2", b.y);
+
+    line.setAttribute("stroke", "#00d084");
+    line.setAttribute("stroke-width", "10");
+    line.setAttribute("stroke-linecap", "round");
+    line.setAttribute("stroke-linejoin", "round");
+    line.setAttribute("opacity", "0.8");
+
+    svg.appendChild(line);
+    // mark start node
+const startEl = document.querySelector(`.node-dot[data-id="${pathIds[0]}"]`);
+if (startEl) startEl.classList.add("start");
+
+// mark end node
+const endEl = document.querySelector(`.node-dot[data-id="${pathIds[pathIds.length - 1]}"]`);
+if (endEl) endEl.classList.add("end");
+  }
 }
+
+
+// ----- Path details panel -----
+
+function renderPathDetails(pathIds) {
+  const startNode = nodesById[pathIds[0]];
+  const endNode = nodesById[pathIds[pathIds.length - 1]];
+  const stepsContainer = document.getElementById("pathSteps");
+
+  document.getElementById("pathSummary").textContent =
+    `Path from ${startNode.name} to ${endNode.name}. ${pathIds.length} steps.`;
+
+  stepsContainer.innerHTML = "";
+
+  pathIds.forEach((id, index) => {
+    const node = nodesById[id];
+    const step = document.createElement("div");
+    step.className = "step-card";
+
+    const title = document.createElement("h3");
+    title.textContent = `Step ${index + 1}: ${node.name}`;
+    step.appendChild(title);
+
+    const desc = document.createElement("p");
+    desc.textContent = node.description || "";
+    step.appendChild(desc);
+
+    if (node.image) {
+      const img = document.createElement("img");
+      img.src = "photos/" + node.image;
+      img.alt = node.name;
+      img.className = "step-image";
+      step.appendChild(img);
+    }
+
+    stepsContainer.appendChild(step);
+  });
+
+  stepsContainer.scrollTop = 0;
+}
+function applyUrlStartSelection() {
+    const params = new URLSearchParams(window.location.search);
+    const startParam = params.get("start");
+
+    if (startParam && nodesById[startParam]) {
+        document.getElementById("startNode").value = startParam;
+    }
+}
+
+  // -------------------------
+
+  if (dest) {
+    const destNode = navData.nodes.find(
+      n => n.id === dest || n.name.toLowerCase() === dest.toLowerCase()
+    );
+    if (destNode) endSel.value = destNode.id;
+  }
+
+  // If we have both selections → auto-find path
+  if (startSel.value && endSel.value) {
+    onFindPath();
+  }
+
+
+
+
