@@ -81,7 +81,7 @@ function recalcScale() {
 }
 
 
-// ---------- NODE DRAWING (NO LABELS) ----------
+// ---------- NODE DRAWING ----------
 
 function drawNodes() {
   navData.nodes.forEach((node) => {
@@ -89,7 +89,6 @@ function drawNodes() {
     dot.className = "map-node";
     dot.dataset.id = node.id;
 
-    // Node click behavior
     dot.addEventListener("click", () => {
       if (!startSelect.value) startSelect.value = node.id;
       else if (!endSelect.value) endSelect.value = node.id;
@@ -103,7 +102,6 @@ function drawNodes() {
     positionNodeElement(dot, node);
   });
 }
-
 
 function positionNodeElement(el, node) {
   const x = node.x * scaleX;
@@ -126,27 +124,15 @@ function populateDropdowns() {
   const sorted = [...navData.nodes].sort((a, b) => a.name.localeCompare(b.name));
 
   sorted.forEach((n) => {
-    let opt1 = document.createElement("option");
-    opt1.value = n.id;
-    opt1.textContent = n.name;
-    startSelect.appendChild(opt1);
-
-    let opt2 = document.createElement("option");
-    opt2.value = n.id;
-    opt2.textContent = n.name;
-    endSelect.appendChild(opt2);
+    startSelect.appendChild(new Option(n.name, n.id));
+    endSelect.appendChild(new Option(n.name, n.id));
   });
 }
 
 
-// ---------- PATHFINDING ----------
+// ---------- PATHFINDING (FIXED VERSION) ----------
 
-// Identify stairs/lift nodes = vertical movement
-function isVerticalNode(id) {
-  return id === "STAIRS" || id === "LIFT";
-}
-
-// Do NOT allow stairs & lift inside floor navigation
+// ⭐ FIXED: Remove the stairs/lift restriction
 function neighborsOf(nodeId) {
   const list = [];
 
@@ -154,12 +140,8 @@ function neighborsOf(nodeId) {
     let a = e.from;
     let b = e.to;
 
-    if (isVerticalNode(a) || isVerticalNode(b)) {
-      if (!isVerticalNode(nodeId)) return; // block unless starting on them
-    }
-
-    if (a === nodeId) list.push({ id: b, weight: e.weight });
-    else if (b === nodeId && !e.oneWay) list.push({ id: a, weight: e.weight });
+    if (a === nodeId) list.push({ id: b });
+    if (b === nodeId) list.push({ id: a });
   });
 
   return list;
@@ -203,18 +185,17 @@ function aStar(startId, endId) {
     if (currentId === endId) return reconstructPath(cameFrom, currentId);
 
     openSet.delete(currentId);
-    const current = nodesById[currentId];
 
     neighborsOf(currentId).forEach((nb) => {
       const neighbor = nodesById[nb.id];
-      const stepCost = nb.weight != null ? nb.weight : heuristic(current, neighbor);
+      const stepCost = heuristic(nodesById[currentId], neighbor);
       const tentative = gScore[currentId] + stepCost;
 
       if (tentative < gScore[nb.id]) {
         cameFrom[nb.id] = currentId;
         gScore[nb.id] = tentative;
         fScore[nb.id] = tentative + heuristic(neighbor, goal);
-        if (!openSet.has(nb.id)) openSet.add(nb.id);
+        openSet.add(nb.id);
       }
     });
   }
@@ -270,7 +251,7 @@ function clearPath(clearText) {
     el.classList.remove("on-path", "start-node", "end-node")
   );
 
-  while (pathOverlay.firstChild) pathOverlay.removeChild(pathOverlay.firstChild);
+  pathOverlay.innerHTML = "";
 
   if (clearText) {
     pathSummaryEl.textContent = "Path cleared. Select a new route.";
@@ -295,57 +276,55 @@ function renderPath(pathIds) {
     if (idx === pathIds.length - 1) el.classList.add("end-node");
   });
 
-  const polyline = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
-  const pointsAttr = pathIds.map((id) => `${nodesById[id].x},${nodesById[id].y}`).join(" ");
-
-  polyline.setAttribute("points", pointsAttr);
-  polyline.setAttribute("fill", "none");
-  polyline.setAttribute("stroke", "#10b981");
-  polyline.setAttribute("stroke-width", "8");
-  polyline.setAttribute("stroke-linecap", "round");
-  polyline.setAttribute("stroke-linejoin", "round");
-  polyline.setAttribute("opacity", "0.7");
-
-  pathOverlay.appendChild(polyline);
+  // Draw SVG
+  const points = pathIds.map((id) => `${nodesById[id].x},${nodesById[id].y}`).join(" ");
+  const line = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+  line.setAttribute("points", points);
+  line.setAttribute("fill", "none");
+  line.setAttribute("stroke", "#10b981");
+  line.setAttribute("stroke-width", "8");
+  pathOverlay.appendChild(line);
   pathOverlay.setAttribute("viewBox", `0 0 ${mapMeta.width} ${mapMeta.height}`);
 
+  // Summary
   const start = nodesById[pathIds[0]];
   const end = nodesById[pathIds[pathIds.length - 1]];
   pathSummaryEl.textContent = `Path from ${start.name} to ${end.name} · ${pathIds.length - 1} steps.`;
 
-  // Step images
+  // Steps
   pathStepsEl.innerHTML = "";
   pathIds.forEach((id, idx) => {
     const n = nodesById[id];
-
-    const stepDiv = document.createElement("div");
-    stepDiv.className = "step-item";
-
-    const title = document.createElement("div");
-    title.className = "step-title";
-    title.textContent = `Step ${idx + 1}: ${n.name}`;
-    stepDiv.appendChild(title);
-
-    if (n.description) {
-      const meta = document.createElement("div");
-      meta.className = "step-meta";
-      meta.textContent = n.description;
-      stepDiv.appendChild(meta);
-    }
-
-    if (n.image) {
-      const img = document.createElement("img");
-      img.className = "step-photo";
-      img.src = `photos/${n.image}`;
-      img.alt = n.name;
-      stepDiv.appendChild(img);
-    }
-
-    pathStepsEl.appendChild(stepDiv);
+    const div = document.createElement("div");
+    div.className = "step-item";
+    div.innerHTML = `
+      <div class="step-title">Step ${idx + 1}: ${n.name}</div>
+      <div class="step-meta">${n.description || ""}</div>
+      ${n.image ? `<img class="step-photo" src="photos/${n.image}" />` : ""}
+    `;
+    pathStepsEl.appendChild(div);
   });
+
+  // -------- MULTI-FLOOR BUTTON -------
+  // --- MULTI-FLOOR AUTO SWITCHING ---
+
+// ---------- MULTI-FLOOR SWITCH ----------
+const destId = pathIds[pathIds.length - 1]; 
+const toFloor1Btn = document.getElementById("toFloor1Btn");
+
+if (destId === "STAIRS" || destId === "LIFT") {
+    toFloor1Btn.style.display = "inline-block";
+
+    toFloor1Btn.onclick = () => {
+        // Send user to Floor 1 with the same start node
+        window.location.href = `../floor1/index.html?start=${destId}`;
+    };
+} else {
+    toFloor1Btn.style.display = "none";
+}
+
 }
 
 function redrawPath(pathIds) {
   if (pathIds) renderPath(pathIds);
 }
-

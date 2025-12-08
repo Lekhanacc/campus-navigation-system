@@ -1,61 +1,434 @@
+/* GENERAL LAYOUT */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
-  font-family: Arial, sans-serif;
-  margin: 20px;
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, sans-serif;
+  background: #f3f4f6;
+  color: #111827;
 }
 
-.controls {
-  margin-bottom: 15px;
+.top-bar {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 12px 24px;
+  background: #0f172a;
+  color: #f9fafb;
 }
 
-label {
-  margin-right: 6px;
+.top-bar h1 {
+  margin: 0;
+  font-size: 20px;
 }
 
-select {
-  margin-right: 15px;
-  padding: 4px;
+.subtitle {
+  font-size: 13px;
+  opacity: 0.8;
 }
 
-button {
-  padding: 6px 12px;
-  background: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
+.layout {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  height: auto !important;
+  min-height: 100vh;
+}
+
+.map-panel {
+  flex: 2;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto !important;
+}
+
+.controls-panel {
+  flex: 1;
+  min-width: 280px;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* MAP */
+
+#map-container {
+  position: relative;
+  display: inline-block;
+  border-radius: 14px;
+  background: #e5e7eb;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.16);
+}
+
+#floor-map {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* SVG overlay */
+#path-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* NODES — NO LABELS */
+
+.map-node {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  border: 2px solid #ffffff;
+  background: #2563eb;
+  transform: translate(-50%, -50%);
   cursor: pointer;
 }
 
-button:hover {
-  background: #0056b3;
+.map-node.on-path {
+  background: #10b981;
 }
 
+.map-node.start-node {
+  background: #22c55e;
+}
+
+.map-node.end-node {
+  background: #ef4444;
+}
+
+.map-node:hover {
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.3);
+}
+
+/* REMOVED LABELS — Hidden Entirely */
+.map-node-label {
+  display: none !important;
+}
+
+/* LEGEND */
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 11px;
+  padding: 4px 4px;
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  border: 1px solid #ffffff;
+}
+
+.legend-dot.node {
+  background: #2563eb;
+}
+.legend-dot.path {
+  background: #10b981;
+}
+.legend-dot.start {
+  background: #22c55e;
+}
+.legend-dot.end {
+  background: #ef4444;
+}
+
+/* CARDS */
+
+.card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 12px 14px;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
+}
+
+.card h2 {
+  margin: 0 0 8px;
+  font-size: 16px;
+}
+
+.field-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+label {
+  font-size: 13px;
+}
+
+select {
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 13px;
+  outline: none;
+}
+
+select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.4);
+}
+
+.button-row {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+button {
+  border: none;
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+#findPathBtn {
+  background: #2563eb;
+  color: #f9fafb;
+}
+
+#findPathBtn:hover {
+  filter: brightness(1.05);
+}
+
+.secondary {
+  background: #e5e7eb;
+}
+
+.secondary:hover {
+  filter: brightness(0.96);
+}
+
+.hint {
+  font-size: 11px;
+  margin-top: 6px;
+  color: #6b7280;
+}
+
+/* PATH DETAILS */
+
+.path-summary {
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.path-steps {
+  max-height: 55vh;
+  overflow-y: auto;
+  border-top: 1px solid #e5e7eb;
+  margin-top: 6px;
+  padding-top: 6px;
+  font-size: 12px;
+}
+
+.step-item {
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed #e5e7eb;
+}
+
+.step-item:last-child {
+  border-bottom: none;
+}
+
+.step-title {
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.step-meta {
+  font-size: 11px;
+  color: #6b7280;
+}
+
+.step-photo {
+  display: block;
+  max-width: 100%;
+  border-radius: 8px;
+  margin-top: 4px;
+}
+
+/* FOOTER */
+
+.footer {
+  padding: 6px 16px 10px;
+  font-size: 11px;
+  text-align: right;
+  color: #6b7280;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+  .layout {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .controls-panel {
+    max-width: none;
+  }
+}
+/* --- Floor overlay fix --- */
 .map-container {
   position: relative;
   display: inline-block;
 }
 
-#floorMap {
-  width: 976px;   /* auto-resized later by JS */
+.map-container img {
+  display: block;
+  width: 100%;
   height: auto;
-  border: 2px solid #ccc;
 }
 
-#pathCanvas {
+/* SVG path layer on top of map */
+#pathLayer,
+.path-layer {
   position: absolute;
   left: 0;
   top: 0;
+  pointer-events: none;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
 }
 
-.node-label {
+/* Node dots layer */
+#nodesLayer,
+.nodes-layer {
   position: absolute;
-  background: #ffdd57;
-  padding: 3px 5px;
-  font-size: 12px;
-  border-radius: 4px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;   /* so clicks go to map, unless overridden */
+  z-index: 3;
 }
 
-#output {
-  margin-top: 20px;
-  white-space: pre-wrap;
-  font-family: monospace;
+/* Individual node dots */
+.node-dot {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #00b894;   /* teal node */
+  border: 2px solid white;
+  box-shadow: 0 0 4px rgba(0,0,0,0.4);
+  transform: translate(-50%, -50%);
+  pointer-events: auto;  /* so you can click nodes */
 }
+#map-container {
+  position: relative;
+}
+
+#map-container img {
+  display: block;
+  width: 100%;
+}
+
+#path-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+
+#nodes-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+}
+
+.map-node {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #2563eb;
+  border: 2px solid #fff;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
+.step-image {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+  display: block;
+  margin-top: 8px;
+}
+.map-container {
+  position: relative;
+}
+
+#floorMap {
+  width: 100%;
+  display: block;
+}
+
+#pathLayer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+}
+
+#nodesLayer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+}
+
+.node-dot {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: #00c2ba;
+  border-radius: 50%;
+  border: 2px solid white;
+  cursor: pointer;
+}
+.node-dot.start {
+  background: #00e676;   /* green */
+  border-color: white;
+}
+
+.node-dot.end {
+  background: #ff5252;   /* red */
+  border-color: white;
+}
+
