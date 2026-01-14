@@ -2,35 +2,44 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>IT Block – First Floor Navigation</title>
+  <title>IT Block – Floor 1 Navigation</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
 <header class="top-bar">
-  <h1>IT Block – First Floor Navigation</h1>
+  <h1>IT Block – First Floor Navigation</h1><br>
   <span class="subtitle">Floor 1 · A* Path Finder</span>
 </header>
 
 <main class="layout">
 
-  <!-- LEFT PANEL -->
+  <!-- LEFT: MAP -->
   <section class="map-panel">
     <div id="map-container">
-      <img id="floorMap" src="photos/floormap_1.jpeg" alt="First Floor Map">
-      <svg id="pathLayer"></svg>
-      <div id="nodesLayer"></div>
+      <!-- Floor map image -->
+      <img id="floor-map" src="photos/floormap_1.jpeg" alt="IT Block First Floor Map">
+      <!-- Path overlay (SVG) -->
+      <svg id="path-overlay"></svg>
     </div>
 
     <div class="legend">
-      <span class="legend-item"><span class="legend-dot node"></span> Node</span>
-      <span class="legend-item"><span class="legend-dot path"></span> Path Node</span>
-      <span class="legend-item"><span class="legend-dot start"></span> Start</span>
-      <span class="legend-item"><span class="legend-dot end"></span> End</span>
+      <span class="legend-item">
+        <span class="legend-dot node"></span> Node
+      </span>
+      <span class="legend-item">
+        <span class="legend-dot path"></span> Path Node
+      </span>
+      <span class="legend-item">
+        <span class="legend-dot start"></span> Start
+      </span>
+      <span class="legend-item">
+        <span class="legend-dot end"></span> End
+      </span>
     </div>
   </section>
 
-  <!-- RIGHT PANEL -->
+  <!-- RIGHT: CONTROLS -->
   <section class="controls-panel">
 
     <div class="card">
@@ -48,20 +57,26 @@
 
       <div class="button-row">
         <button id="findPathBtn">Find Shortest Path</button>
-        <button id="clearBtn" class="secondary">Clear</button>
+        <button id="clearPathBtn" class="secondary">Clear</button>
       </div>
 
       <p class="hint">
-        Tip: choose any two rooms, labs, washroom, stairs, or lift.
+        Tip: pick any two rooms, labs, or corridor nodes to see the route.
       </p>
     </div>
 
     <div class="card">
       <h2>Path Details</h2>
-      <div id="pathSummary" class="path-summary">
+
+      <!-- Placeholder for next floor -->
+      <button id="toFloor1Btn" class="secondary" style="display:none;">
+        Continue on Floor 2
+      </button>
+
+      <div id="path-summary" class="path-summary">
         Select a start and destination.
       </div>
-      <div id="pathSteps" class="path-steps"></div>
+      <div id="path-steps" class="path-steps"></div>
     </div>
 
   </section>

@@ -1,0 +1,47 @@
+{
+  "building": "IT Block",
+  "floor": 2,
+  "meta": {
+    "mapWidth": 976,
+    "mapHeight": 639
+  },
+  "nodes": [
+    { "id": "WASHROOM_2F", "name": "Wash Rooms (2F)", "type": "washroom", "x": 180, "y": 125, "image": "washrooms_2.jpeg" },
+    { "id": "IT2F01", "name": "IT 2F - 01", "type": "classroom", "x": 300, "y": 125, "image": "IT 2F - 01.jpeg" },
+    { "id": "IT2F02", "name": "IT 2F - 02", "type": "classroom", "x": 520, "y": 125, "image": "IT 2F - 02.jpeg" },
+    { "id": "MEETING_ROOM", "name": "Meeting Room (CDCA)", "type": "office", "x": 710, "y": 125, "image": "meeting_room_CDCA.jpeg" },
+    { "id": "CONTROL_ROOM", "name": "Control Room (CDCA)", "type": "office", "x": 797, "y": 125, "image": "control_room_CDCA.jpeg" },
+    { "id": "UPS_2F", "name": "UPS Room (2F)", "type": "utility", "x": 797, "y": 160, "image": "UPS_room_2.jpeg" },
+    { "id": "ITLAB9", "name": "IT Lab - 9", "type": "lab", "x": 797, "y": 310, "image": "IT_lab-9.jpeg" },
+    { "id": "STAFFROOM_2_2F", "name": "Staff Room - 2 (2F)", "type": "staff", "x": 797, "y": 470, "image": "staffroom_2_2.jpeg" },
+    { "id": "ITLAB10", "name": "IT Lab - 10", "type": "lab", "x": 797, "y": 520, "image": "IT_lab10_2.jpeg" },
+    { "id": "SEMINAR_HALL", "name": "Seminar Hall (CSE)", "type": "hall", "x": 500, "y": 520, "image": "seminarhall_cse_2.jpeg" },
+    { "id": "INTERVIEW_ROOM", "name": "Interview Room (CDCA)", "type": "office", "x": 180, "y": 520, "image": "interview_room_CDCA.jpeg" },
+    { "id": "STAFFROOM_1_2F", "name": "Staff Room - 1 (2F)", "type": "staff", "x": 180, "y": 445, "image": "staffroom_1_2.jpeg" },
+    { "id": "IT2F03", "name": "IT 2F - 03", "type": "classroom", "x": 180, "y": 260, "image": "IT 2F - 03.jpeg" },
+    { "id": "STAIRS", "name": "Stairs", "type": "stairs", "x": 260, "y": 450, "image": "stairs_2.jpeg" },
+    { "id": "LIFT", "name": "Lift", "type": "lift", "x": 745, "y": 230, "image": "lift_2.jpeg" }
+  ],
+
+  "edges": [
+    { "from": "WASHROOM_2F", "to": "IT2F01" },
+    { "from": "IT2F01", "to": "IT2F02" },
+    { "from": "IT2F02", "to": "MEETING_ROOM" },
+    { "from": "MEETING_ROOM", "to": "CONTROL_ROOM" },
+    { "from": "CONTROL_ROOM", "to": "UPS_2F" },
+    { "from": "UPS_2F", "to": "ITLAB9" },
+    { "from": "ITLAB9", "to": "STAFFROOM_2_2F" },
+    { "from": "STAFFROOM_2_2F", "to": "ITLAB10" },
+    { "from": "ITLAB10", "to": "SEMINAR_HALL" },
+    { "from": "SEMINAR_HALL", "to": "INTERVIEW_ROOM" },
+    { "from": "INTERVIEW_ROOM", "to": "STAFFROOM_1_2F" },
+    { "from": "STAFFROOM_1_2F", "to": "IT2F03" },
+    { "from": "IT2F03", "to": "WASHROOM_2F" },
+
+    { "from": "MEETING_ROOM", "to": "LIFT" },
+    { "from": "STAFFROOM_1_2F", "to": "STAIRS" }
+  ]
+}
+
+
+

@@ -1,215 +1,59 @@
 {
   "building": "IT Block",
   "floor": 0,
-  "meta": {
-    "mapWidth": 976,
-    "mapHeight": 639
-  },
+  "meta": { "mapWidth": 976, "mapHeight": 639 },
+
   "nodes": [
-    {
-      "id": "WASHROOM",
-      "name": "Wash Rooms",
-      "shortName": "Washroom",
-      "type": "washroom",
-      "x": 180,
-      "y": 125,
-      "side": "top",
-      "description": "Washrooms block at the top-left.",
-      "image": "washrooms.jpeg"
-    },
-    {
-      "id": "ITGF01",
-      "name": "IT GF - 01",
-      "shortName": "GF-01",
-      "type": "classroom",
-      "x": 300,
-      "y": 125,
-      "side": "top",
-      "description": "Ground floor classroom 01.",
-      "image": "IT_GF_01_0.jpeg"
-    },
-    {
-      "id": "ITLAB01",
-      "name": "IT Lab - 01",
-      "shortName": "Lab-01",
-      "type": "lab",
-      "x": 490,
-      "y": 125,
-      "side": "top",
-      "description": "IT Laboratory 01.",
-      "image": "it_lab_01.jpeg"
-    },
-    {
-      "id": "STAFF01",
-      "name": "Staff Room 01",
-      "shortName": "Staff-01",
-      "type": "staff",
-      "x": 680,
-      "y": 125,
-      "side": "top",
-      "description": "Staff Room 01.",
-      "image": "staff_room_01.jpeg"
-    },
-    {
-      "id": "HOD",
-      "name": "HOD AI-ML",
-      "shortName": "HOD",
-      "type": "office",
-      "x": 790,
-      "y": 125,
-      "side": "top",
-      "description": "Head of Department AI & ML.",
-      "image": "hod_aiml.jpeg"
-    },
+    { "id": "COR_TOP", "type": "corridor", "x": 500, "y": 125 },
+    { "id": "COR_RIGHT", "type": "corridor", "x": 790, "y": 350 },
+    { "id": "COR_BOTTOM", "type": "corridor", "x": 500, "y": 520 },
+    { "id": "COR_LEFT", "type": "corridor", "x": 180, "y": 300 },
 
-    {
-      "id": "STAFF02",
-      "name": "Staff Room 02",
-      "shortName": "Staff-02",
-      "type": "staff",
-      "x": 790,
-      "y": 200,
-      "side": "right",
-      "description": "Staff Room 02 on Corridor-3.",
-      "image": "staff_room_02.jpeg"
-    },
-    {
-      "id": "ITGF02",
-      "name": "IT GF - 02",
-      "shortName": "GF-02",
-      "type": "classroom",
-      "x": 790,
-      "y": 355,
-      "side": "right",
-      "description": "Ground floor classroom 02.",
-      "image": "IT_GF_02_0.jpeg"
-    },
-    {
-      "id": "STAFF03",
-      "name": "Staff Room 03",
-      "shortName": "Staff-03",
-      "type": "staff",
-      "x": 790,
-      "y": 459,
-      "side": "right",
-      "description": "Staff Room 03 near Gradient Hall.",
-      "image": "staff_room_03.jpeg"
-    },
-    {
-      "id": "GRADIENT",
-      "name": "Gradient Hall",
-      "shortName": "Gradient",
-      "type": "hall",
-      "x": 790,
-      "y": 520,
-      "side": "right",
-      "description": "Gradient Hall at the end of Corridor-4.",
-      "image": "gradient_hall.jpeg"
-    },
+    { "id": "WASHROOM", "name": "Wash Rooms", "type": "washroom", "x": 180, "y": 125 },
+    { "id": "ITGF01", "name": "IT GF - 01", "type": "classroom", "x": 300, "y": 125 },
+    { "id": "ITLAB01", "name": "IT Lab - 01", "type": "lab", "x": 490, "y": 125 },
+    { "id": "STAFF01", "name": "Staff Room 01", "type": "staff", "x": 680, "y": 125 },
+    { "id": "HOD", "name": "HOD AI-ML", "type": "office", "x": 790, "y": 125 },
 
-    {
-      "id": "ITLAB02",
-      "name": "IT Lab - 02",
-      "shortName": "Lab-02",
-      "type": "lab",
-      "x": 660,
-      "y": 520,
-      "side": "bottom",
-      "description": "IT Laboratory 02.",
-      "image": "it_lab_02.jpeg"
-    },
-    {
-      "id": "ITGF03",
-      "name": "IT GF - 03",
-      "shortName": "GF-03",
-      "type": "classroom",
-      "x": 470,
-      "y": 520,
-      "side": "bottom",
-      "description": "Ground floor classroom 03.",
-      "image": "IT_GF_03_0.jpeg"
-    },
-    {
-      "id": "CREATIVE",
-      "name": "Creative Arena",
-      "shortName": "Creative",
-      "type": "room",
-      "x": 300,
-      "y": 520,
-      "side": "bottom",
-      "description": "Creative Arena next to the entrance.",
-      "image": "creative_arena.jpeg"
-    },
-    {
-      "id": "ENTRANCE",
-      "name": "IT Block Entrance",
-      "shortName": "Entrance",
-      "type": "entrance",
-      "x": 180,
-      "y": 520,
-      "side": "bottom",
-      "description": "Main entrance to the IT Block.",
-      "image": "IT_block_entrance.jpeg"
-    },
+    { "id": "STAFF02", "name": "Staff Room 02", "type": "staff", "x": 790, "y": 200 },
+    { "id": "ITGF02", "name": "IT GF - 02", "type": "classroom", "x": 790, "y": 355 },
+    { "id": "STAFF03", "name": "Staff Room 03", "type": "staff", "x": 790, "y": 459 },
+    { "id": "GRADIENT", "name": "Gradient Hall", "type": "hall", "x": 790, "y": 520 },
 
-    {
-      "id": "AIML",
-      "name": "AI & ML Synergy Lab",
-      "shortName": "AI-ML Lab",
-      "type": "lab",
-      "x": 180,
-      "y": 295,
-      "side": "left",
-      "description": "AI & ML Synergy Lab on Corridor-1.",
-      "image": "aiml_synergy_lab.jpeg"
-    },
+    { "id": "ITLAB02", "name": "IT Lab - 02", "type": "lab", "x": 660, "y": 520 },
+    { "id": "ITGF03", "name": "IT GF - 03", "type": "classroom", "x": 470, "y": 520 },
+    { "id": "CREATIVE", "name": "Creative Arena", "type": "room", "x": 300, "y": 520 },
+    { "id": "ENTRANCE", "name": "Entrance", "type": "entrance", "x": 180, "y": 520 },
 
-    {
-      "id": "STAIRS",
-      "name": "Stairs",
-      "shortName": "Stairs",
-      "type": "stairs",
-      "x": 240,
-      "y": 470,
-      "side": "bottom",
-      "description": "Staircase to upper floors.",
-      "image": "stairs.jpeg"
-    },
-    {
-      "id": "LIFT",
-      "name": "Lift",
-      "shortName": "Lift",
-      "type": "lift",
-      "x": 730,
-      "y": 230,
-      "side": "top",
-      "description": "Lift near Corridor-3 and Staff Room 02.",
-      "image": "lift.jpeg"
-    }
+    { "id": "AIML", "name": "AI & ML Lab", "type": "lab", "x": 180, "y": 295 },
+    { "id": "STAIRS", "name": "Stairs", "type": "stairs", "x": 240, "y": 470 },
+    { "id": "LIFT", "name": "Lift", "type": "lift", "x": 730, "y": 230 }
   ],
+
   "edges": [
-  { "from": "WASHROOM", "to": "ITGF01" },
-  { "from": "ITGF01", "to": "ITLAB01" },
-  { "from": "ITLAB01", "to": "STAFF01" },
-  { "from": "STAFF01", "to": "HOD" },
+    { "from": "COR_TOP", "to": "COR_RIGHT" },
+    { "from": "COR_RIGHT", "to": "COR_BOTTOM" },
+    { "from": "COR_BOTTOM", "to": "COR_LEFT" },
+    { "from": "COR_LEFT", "to": "COR_TOP" },
 
-  { "from": "HOD", "to": "STAFF02" },
-  { "from": "STAFF02", "to": "ITGF02" },
-  { "from": "ITGF02", "to": "STAFF03" },
-  { "from": "STAFF03", "to": "GRADIENT" },
+    { "from": "WASHROOM", "to": "COR_TOP" },
+    { "from": "ITGF01", "to": "COR_TOP" },
+    { "from": "ITLAB01", "to": "COR_TOP" },
+    { "from": "STAFF01", "to": "COR_TOP" },
+    { "from": "HOD", "to": "COR_TOP" },
 
-  { "from": "GRADIENT", "to": "ITLAB02" },
-  { "from": "ITLAB02", "to": "ITGF03" },
-  { "from": "ITGF03", "to": "CREATIVE" },
-  { "from": "CREATIVE", "to": "ENTRANCE" },
+    { "from": "STAFF02", "to": "COR_RIGHT" },
+    { "from": "ITGF02", "to": "COR_RIGHT" },
+    { "from": "STAFF03", "to": "COR_RIGHT" },
+    { "from": "GRADIENT", "to": "COR_RIGHT" },
 
-  { "from": "ENTRANCE", "to": "AIML" },
-  { "from": "AIML", "to": "WASHROOM" },
+    { "from": "ITLAB02", "to": "COR_BOTTOM" },
+    { "from": "ITGF03", "to": "COR_BOTTOM" },
+    { "from": "CREATIVE", "to": "COR_BOTTOM" },
+    { "from": "ENTRANCE", "to": "COR_BOTTOM" },
 
-  { "from": "ENTRANCE", "to": "STAIRS" },
-
-  { "from": "STAFF01", "to": "LIFT" },
-  { "from": "ITGF02", "to": "LIFT" }
-]
+    { "from": "AIML", "to": "COR_LEFT" },
+    { "from": "STAIRS", "to": "COR_LEFT" },
+    { "from": "LIFT", "to": "COR_RIGHT" }
+  ]
 }
-   

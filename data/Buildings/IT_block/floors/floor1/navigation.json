@@ -1,203 +1,58 @@
 {
   "building": "IT Block",
   "floor": 1,
-  "meta": {
-    "mapWidth": 976,
-    "mapHeight": 639
-  },
+  "meta": { "mapWidth": 976, "mapHeight": 639 },
+
   "nodes": [
-    {
-      "id": "WASHROOM_1F",
-      "name": "Wash Rooms (1F)",
-      "shortName": "Washroom",
-      "type": "washroom",
-      "x": 180,
-      "y": 130,
-      "side": "top",
-      "description": "Washrooms block at the top-left of the first floor.",
-      "image": "washrooms.jpeg"
-    },
-    {
-      "id": "IT1F01",
-      "name": "IT 1F - 01",
-      "shortName": "1F-01",
-      "type": "classroom",
-      "x": 290,
-      "y": 130,
-      "side": "top",
-      "description": "First floor classroom 01.",
-      "image": "IT_2F_01.jpeg"
-    },
-    {
-      "id": "STAFF1_1F",
-      "name": "Staff Room 1 (1F)",
-      "shortName": "Staff-1",
-      "type": "staff",
-      "x": 470,
-      "y": 130,
-      "side": "top",
-      "description": "Staff Room 1 on the first floor.",
-      "image": "staff_room-1.jpeg"
-    },
-    {
-      "id": "HOD_CSE",
-      "name": "HOD CSE",
-      "shortName": "HOD CSE",
-      "type": "office",
-      "x": 690,
-      "y": 130,
-      "side": "top",
-      "description": "Head of Department - CSE office.",
-      "image": "CSE_HOD_dept.jpeg"
-    },
-    {
-      "id": "STAFF2_1F",
-      "name": "Staff Room 2 (1F)",
-      "shortName": "Staff-2",
-      "type": "staff",
-      "x": 800,
-      "y": 130,
-      "side": "right",
-      "description": "Second staff room on the first floor.",
-      "image": "staff_room-2.jpeg"
-    },
+    { "id": "COR_TOP", "type": "corridor", "x": 500, "y": 130 },
+    { "id": "COR_RIGHT", "type": "corridor", "x": 800, "y": 350 },
+    { "id": "COR_BOTTOM", "type": "corridor", "x": 500, "y": 520 },
+    { "id": "COR_LEFT", "type": "corridor", "x": 180, "y": 350 },
 
-    {
-      "id": "UPS_ROOM",
-      "name": "UPS Room",
-      "shortName": "UPS",
-      "type": "utility",
-      "x": 800,
-      "y": 180,
-      "side": "right",
-      "description": "UPS backup room on the first floor.",
-      "image": "ups_room.jpeg"
-    },
-    {
-      "id": "IT1F02",
-      "name": "IT 1F - 02",
-      "shortName": "1F-02",
-      "type": "classroom",
-      "x": 800,
-      "y": 320,
-      "side": "right",
-      "description": "First floor classroom 02.",
-      "image": "IT_2F_02.jpeg"
-    },
-    {
-      "id": "SERVER_ROOM",
-      "name": "Server Room",
-      "shortName": "Server",
-      "type": "utility",
-      "x": 800,
-      "y": 470,
-      "side": "right",
-      "description": "Server room on the first floor.",
-      "image": "server_room.jpeg"
-    },
-    {
-      "id": "ITLAB06",
-      "name": "IT Lab - 06",
-      "shortName": "Lab-06",
-      "type": "lab",
-      "x": 800,
-      "y": 520,
-      "side": "right",
-      "description": "IT Laboratory 06.",
-      "image": "IT_lab_6.jpeg"
-    },
+    { "id": "WASHROOM_1F", "name": "Wash Rooms", "type": "washroom", "x": 180, "y": 130 },
+    { "id": "IT1F01", "name": "IT 1F - 01", "type": "classroom", "x": 290, "y": 130 },
+    { "id": "STAFF1_1F", "name": "Staff Room 1", "type": "staff", "x": 470, "y": 130 },
+    { "id": "HOD_CSE", "name": "HOD CSE", "type": "office", "x": 690, "y": 130 },
+    { "id": "STAFF2_1F", "name": "Staff Room 2", "type": "staff", "x": 800, "y": 130 },
 
-    {
-      "id": "ITLAB07",
-      "name": "IT Lab - 07",
-      "shortName": "Lab-07",
-      "type": "lab",
-      "x": 640,
-      "y": 520,
-      "side": "bottom",
-      "description": "IT Laboratory 07.",
-      "image": "IT_lab_7.jpeg"
-    },
-    {
-      "id": "IT1F03",
-      "name": "IT 1F - 03",
-      "shortName": "1F-03",
-      "type": "classroom",
-      "x": 330,
-      "y": 520,
-      "side": "bottom",
-      "description": "First floor classroom 03.",
-      "image": "IT_2F_03.jpeg"
-    },
-    {
-      "id": "CISCO",
-      "name": "CISCO Centre",
-      "shortName": "CISCO",
-      "type": "lab",
-      "x": 180,
-      "y": 520,
-      "side": "bottom",
-      "description": "CISCO Centre lab on the first floor.",
-      "image": "IT_lab_8_CISCO.jpeg"
-    },
+    { "id": "UPS_ROOM", "name": "UPS Room", "type": "utility", "x": 800, "y": 180 },
+    { "id": "IT1F02", "name": "IT 1F - 02", "type": "classroom", "x": 800, "y": 320 },
+    { "id": "SERVER_ROOM", "name": "Server Room", "type": "utility", "x": 800, "y": 470 },
+    { "id": "ITLAB06", "name": "IT Lab - 06", "type": "lab", "x": 800, "y": 520 },
 
-    {
-      "id": "ITLAB05",
-      "name": "IT Lab - 05",
-      "shortName": "Lab-05",
-      "type": "lab",
-      "x": 180,
-      "y": 320,
-      "side": "left",
-      "description": "IT Lab 05 on the left side of the first floor.",
-      "image": "IT_lab_5.jpeg"
-    },
+    { "id": "ITLAB07", "name": "IT Lab - 07", "type": "lab", "x": 640, "y": 520 },
+    { "id": "IT1F03", "name": "IT 1F - 03", "type": "classroom", "x": 330, "y": 520 },
+    { "id": "CISCO", "name": "CISCO Lab", "type": "lab", "x": 180, "y": 520 },
+    { "id": "ITLAB05", "name": "IT Lab - 05", "type": "lab", "x": 180, "y": 320 },
 
-    {
-      "id": "STAIRS",
-      "name": "Stairs (1F)",
-      "shortName": "Stairs",
-      "type": "stairs",
-      "x": 250,
-      "y": 465,
-      "side": "inner",
-      "description": "Staircase connecting to other floors.",
-      "image": "stairs.jpeg"
-    },
-    {
-      "id": "LIFT",
-      "name": "Lift (1F)",
-      "shortName": "Lift",
-      "type": "lift",
-      "x": 740,
-      "y": 235,
-      "side": "inner",
-      "description": "Lift landing on the first floor.",
-      "image": "lift.jpeg"
-    }
+    { "id": "STAIRS", "name": "Stairs", "type": "stairs", "x": 250, "y": 465 },
+    { "id": "LIFT", "name": "Lift", "type": "lift", "x": 740, "y": 235 }
   ],
 
   "edges": [
-    { "from": "WASHROOM_1F", "to": "IT1F01" },
-    { "from": "IT1F01", "to": "STAFF1_1F" },
-    { "from": "STAFF1_1F", "to": "HOD_CSE" },
-    { "from": "HOD_CSE", "to": "STAFF2_1F" },
+    { "from": "COR_TOP", "to": "COR_RIGHT" },
+    { "from": "COR_RIGHT", "to": "COR_BOTTOM" },
+    { "from": "COR_BOTTOM", "to": "COR_LEFT" },
+    { "from": "COR_LEFT", "to": "COR_TOP" },
 
-    { "from": "STAFF2_1F", "to": "UPS_ROOM" },
-    { "from": "UPS_ROOM", "to": "IT1F02" },
-    { "from": "IT1F02", "to": "SERVER_ROOM" },
-    { "from": "SERVER_ROOM", "to": "ITLAB06" },
+    { "from": "WASHROOM_1F", "to": "COR_TOP" },
+    { "from": "IT1F01", "to": "COR_TOP" },
+    { "from": "STAFF1_1F", "to": "COR_TOP" },
+    { "from": "HOD_CSE", "to": "COR_TOP" },
+    { "from": "STAFF2_1F", "to": "COR_TOP" },
 
-    { "from": "ITLAB06", "to": "ITLAB07" },
-    { "from": "ITLAB07", "to": "IT1F03" },
-    { "from": "IT1F03", "to": "CISCO" },
-    { "from": "CISCO", "to": "ITLAB05" },
-    { "from": "ITLAB05", "to": "WASHROOM_1F" },
+    { "from": "UPS_ROOM", "to": "COR_RIGHT" },
+    { "from": "IT1F02", "to": "COR_RIGHT" },
+    { "from": "SERVER_ROOM", "to": "COR_RIGHT" },
+    { "from": "ITLAB06", "to": "COR_RIGHT" },
 
-    { "from": "CISCO", "to": "STAIRS" },
-    { "from": "IT1F03", "to": "STAIRS" },
+    { "from": "ITLAB07", "to": "COR_BOTTOM" },
+    { "from": "IT1F03", "to": "COR_BOTTOM" },
+    { "from": "CISCO", "to": "COR_BOTTOM" },
 
-    { "from": "HOD_CSE", "to": "LIFT" },
-    { "from": "IT1F02", "to": "LIFT" }
+    { "from": "ITLAB05", "to": "COR_LEFT" },
+    { "from": "STAIRS", "to": "COR_LEFT" },
+    { "from": "LIFT", "to": "COR_RIGHT" }
   ]
 }
+
